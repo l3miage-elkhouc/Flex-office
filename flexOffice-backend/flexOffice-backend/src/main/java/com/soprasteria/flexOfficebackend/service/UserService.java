@@ -1,44 +1,38 @@
 package com.soprasteria.flexOfficebackend.service;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.soprasteria.flexOfficebackend.model.User;
+import com.soprasteria.flexOfficebackend.repository.UserRepository;
 
 @Service
 public class UserService {
     
-    static ArrayList <User> users = new ArrayList<>(Arrays.asList(
-
-            new User(1, "ELKHOU", "Chaymae"),
-            new User(2, "Bah", "kk"),
-            new User(3, "ELKH", "Chay")
-
-
-
-    ));
+    @Autowired
+    private UserRepository userRepository;
 
     public List<User> getUsers(){
+        List<User> users = new ArrayList<>();
+        userRepository.findAll().forEach(user -> {
+            users.add(user);
+        });
         return users;
     }
     public User getUser(int id){
-        return users.stream().filter(user -> user.getId() == id ).findFirst().orElse(null);
+        return userRepository.findById(id).orElse(null);
     }
     public void deleteUser(int id){
-        users.removeIf(user -> user.getId() == id);
+        userRepository.deleteById(id);
     }
 
     public void addUser(User user){
-        users.add(user);
+        userRepository.save(user);
     }
     public void updateUser(User user, int id){
-        users.forEach(user1 -> {
-            if(user1.getId() == id){
-                users.set(users.indexOf(user1), user);
-            }
-        });
+        userRepository.save(user);
     }
 }
