@@ -11,7 +11,7 @@ import { OnInit } from '@angular/core';
 })
 export class AppComponent implements OnInit {
   title = 'Flex-office-front';
-  users: any[] = [];
+  utilisateurs: any[] = [];
 
 
   constructor(private userService : UserService){
@@ -20,6 +20,6 @@ export class AppComponent implements OnInit {
   ngOnInit(): void {
     console.log('OnInit ...');
     this.userService.getUsers().subscribe((data) => {
-      this.users = Object.values(data);    });
+      this.utilisateurs = Object.values(data);    });
   }
 }

@@ -1,0 +1,114 @@
+<!-- <div *ngIf="dataLoaded">
+  <h2>Bienvenue, {{ userName }}</h2>
+  <p>Équipe : {{ equipeName }}</p>
+</div> -->
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Votre Espace Utilisateur - Gestion du Flex Office</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    
+</head>
+<body>
+    <nav class="navbar navbar-expand navbar-light bg-white">
+        <div class="container">
+          <a class="navbar-brand" href="#">
+            <img src="https://mma.prnewswire.com/media/1861938/Sopra_Steria_Logo.jpg?p=facebook" alt="Logo de Sopra Steria" style="width: 150px; height: 80px;">
+          </a>
+          <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+              <a class="nav-link" routerLink="/register" style="color: black;">Register</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" routerLink="/login" style="color: black;">Logout</a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+
+
+    <div class="container">
+        <div style="text-align: center;">
+            <h2>Bienvenue  <strong>{{ userName }}</strong> dans votre Espace Utilisateur!</h2>
+        </div>
+        
+        
+        <!-- Section des membres de l'équipe -->
+        <div class="card">
+            <div class="card-header">
+                Votre Équipe
+            </div>
+            <div class="card-body">
+
+                <p> Vous êtes dans l'équipe <strong>{{ equipeName }} </strong> qui partage votre aventure de travail </p>
+                <!-- Insérer ici la liste des membres de l'équipe -->
+            </div>
+        </div>
+        
+       
+        <!-- Section de la présence hebdomadaire -->
+        <div class="card">
+            <div class="card-header">
+                Votre Semaine
+            </div>
+            <div class="card-body">
+                <p>Vérifiez quand vous êtes en mode bureau cette semaine.</p>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Jour</th>
+                            <th>Bureau</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Insérer ici les données dynamiques de présence hebdomadaire -->
+                        <tr>
+                            <td>Lundi</td>
+                            <td>Bureau A</td>
+                        </tr>
+                        <tr>
+                            <td>Mardi</td>
+                            <td>Bureau B</td>
+                        </tr>
+                        <tr>
+                            <td>Mercredi</td>
+                            <td>Bureau C</td>
+                        </tr>
+                        <tr>
+                            <td>Jeudi</td>
+                            <td>Bureau D</td>
+                        </tr>
+                        <tr>
+                            <td>Vendredi</td>
+                            <td>Bureau E</td>
+                        </tr>
+                        <tr>
+                            <td>Samedi</td>
+                            <td>-</td>
+                        </tr>
+                        <tr>
+                            <td>Dimanche</td>
+                            <td>-</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+        <!-- Section pour fournir des commentaires -->
+        <div class="card">
+            <div class="card-header">
+                Vos Remarques
+            </div>
+            <div class="card-body">
+                <p>Partagez vos réflexions et contribuez à améliorer votre coin de travail.</p>
+                <textarea class="form-control" rows="3"></textarea>
+                <button class="btn btn-primary mt-2">Envoyer</button>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
