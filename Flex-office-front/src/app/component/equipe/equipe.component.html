@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Votre Espace Utilisateur - Gestion du Flex Office</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    
+</head>
+<body>
+    <nav class="navbar navbar-expand navbar-light bg-white">
+        <div class="container">
+          <a class="navbar-brand" href="#">
+            <img src="https://mma.prnewswire.com/media/1861938/Sopra_Steria_Logo.jpg?p=facebook" alt="Logo de Sopra Steria" style="width: 150px; height: 80px;">
+          </a>
+          <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+                <a class="nav-link" routerLink="/dashboard" style="color: black;">Accueil</a>
+              </li>
+            <!-- Menu déroulant Administration -->
+            <!-- <li class="nav-item dropdown" *ngIf="admin">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                Administration
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                <li><a class="dropdown-item" routerLink="/add-bureau">Gestion des Equipes</a></li>
+                <li><a class="dropdown-item" routerLink="/add-equipe">Gestion des Bureaux</a></li>
+                <li><a class="dropdown-item" routerLink="/visualisation">Visualisation des Attributions</a></li>
+                </ul>
+            </li> -->
+            <!-- <li class="nav-item">
+              <a class="nav-link" routerLink="/register" style="color: black;">Register</a>
+            </li> -->
+            <li class="nav-item">
+              <a class="nav-link" routerLink="/login" style="color: black;">Déconnexion</a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+      <div class="container">
+
+ 
+        <div class="card-body">
+          <div class="card">
+            <h3 class="card-header" style="text-align: center;">
+                Gestion des équipes
+            </h3>
+            <div class="card-body">
+                <div class="accordion" id="accordionPanelsStayOpenExample">
+                    <div class="accordion-item">
+                      <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="true" aria-controls="panelsStayOpen-collapseOne">
+                        Ajouter une Equipe
+                        </button>
+                      </h2>
+                      <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse ">
+                        <form class="form-inline m-4">
+                            <div class="form-group mb-2">
+                              <label for="nom" class="sr-only">Nom de l'équipe</label>
+                              <input type="text" class="form-control" id="nom" formControlName="nom" placeholder="Nom de l'équipe">
+                            </div>
+                            <div class="form-group mx-sm-3 mb-2">
+                              <label for="capacite" class="sr-only">Nombre de personnes</label>
+                              <input type="text" class="form-control" id="capacite" formControlName="capacite" placeholder="Nombre de personnes">
+                            </div>
+                            <button type="submit" class="btn btn-primary mb-2">Ajouter</button>
+                          </form>
+                      </div>
+                    </div>
+                    <div class="accordion-item">
+                      <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseTwo" aria-expanded="false" aria-controls="panelsStayOpen-collapseTwo">
+                        Modifier une équipe
+                        </button>
+                      </h2>
+                      <div id="panelsStayOpen-collapseTwo" class="accordion-collapse collapse">
+                        <div class="accordion-body">
+                          <form id="editForm">
+                            <div class="form-group">
+                              <label for="bureauEditSelect">Sélectionnez l'équipe à Modifier :</label>
+                              <select class="form-control" id="bureauEditSelect" onchange="loadCurrentBureauInfo()">
+                                <!-- Les options des équipes sont générées dynamiquement ici -->
+                              </select>
+                            </div>
+                            <!-- Les champs de formulaire pour la modification -->
+                            <div class="form-group">
+                              <label for="editNom">Nom de l'équipe</label>
+                              <input type="text" class="form-control" id="editNom">
+                            </div>
+                            <div class="form-group">
+                              <label for="editCapacite">Nombre de personnes</label>
+                              <input type="text" class="form-control" id="editCapacite">
+                            </div>
+                            <button type="button" class="btn btn-primary" onclick="updateBureau()">Modifier</button>
+                          </form>
+                        </div>
+                      </div>
+                      
+                    </div>
+                    <div class="accordion-item">
+                      <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseThree" aria-expanded="false" aria-controls="panelsStayOpen-collapseThree">
+                        Supprimer une équipe
+                        </button>
+                      </h2>
+                      <div id="panelsStayOpen-collapseThree" class="accordion-collapse collapse">
+                        <div class="accordion-body">
+                          <form id="deleteForm">
+                            <div class="form-group">
+                              <label for="bureauSelect">Sélectionnez l'équipe à Supprimer :</label>
+                              <select class="form-control" id="bureauSelect">
+                                <!-- Les options des bureaux sont générées dynamiquement ici -->
+                              </select>
+                            </div>
+                            <button type="button" class="btn btn-danger" onclick="confirmDeletion()">Supprimer</button>
+                          </form>
+                        </div>
+                      </div>
+                      
+                    </div>
+                  </div> 
+                  
+            </div>
+    
+        </div>
+              
+
+    </div>
+</div>
+
+   
+</body>
+</html>

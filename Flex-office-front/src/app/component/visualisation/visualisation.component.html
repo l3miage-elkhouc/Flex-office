@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Votre Espace Utilisateur - Gestion du Flex Office</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    
+</head>
+<body>
+    <nav class="navbar navbar-expand navbar-light bg-white">
+        <div class="container">
+          <a class="navbar-brand" href="#">
+            <img src="https://mma.prnewswire.com/media/1861938/Sopra_Steria_Logo.jpg?p=facebook" alt="Logo de Sopra Steria" style="width: 150px; height: 80px;">
+          </a>
+          <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+                <a class="nav-link" routerLink="/dashboard" style="color: black;">Accueil</a>
+              </li>
+            <!-- Menu déroulant Administration -->
+            <!-- <li class="nav-item dropdown" *ngIf="admin">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                Administration
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                <li><a class="dropdown-item" routerLink="/add-bureau">Gestion des Equipes</a></li>
+                <li><a class="dropdown-item" routerLink="/add-equipe">Gestion des Bureaux</a></li>
+                <li><a class="dropdown-item" routerLink="/visualisation">Visualisation des Attributions</a></li>
+                </ul>
+            </li> -->
+            <!-- <li class="nav-item">
+              <a class="nav-link" routerLink="/register" style="color: black;">Register</a>
+            </li> -->
+            <li class="nav-item">
+              <a class="nav-link" routerLink="/login" style="color: black;">Déconnexion</a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+      <div class="container">
+
+      <div class="card">
+        <h3 class="card-header" style="text-align: center;">
+            Affectation des Bureaux pour la Semaine 
+        </h3>
+        <div class="card-body">
+            <table class="table">
+                <thead>
+                  <tr>
+                    <th>Équipe</th>
+                    <th>Lundi</th>
+                    <th>Mardi</th>
+                    <th>Mercredi</th>
+                    <th>Jeudi</th>
+                    <th>Vendredi</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let team of transformedAffectations">
+                    <td>{{ team.equipe }}</td>
+                    <td>{{ team.Lundi }}</td>
+                    <td>{{ team.Mardi }}</td>
+                    <td>{{ team.Mercredi }}</td>
+                    <td>{{ team.Jeudi }}</td>
+                    <td>{{ team.Vendredi }}</td>
+                  </tr>
+                </tbody>
+              </table>
+              
+        </div>
+
+    </div>
+</div>
+
+   
+</body>
+</html>

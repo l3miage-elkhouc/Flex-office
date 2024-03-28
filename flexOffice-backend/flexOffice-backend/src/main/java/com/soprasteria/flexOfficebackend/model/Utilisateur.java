@@ -25,6 +25,10 @@ public class Utilisateur {
     @Column(name="password")
     private String password;
 
+    
+    @Column(name="admin")
+    private Boolean admin;
+
     @ManyToOne
     @JoinColumn(name = "equipe_id")
     private Equipe equipe;
@@ -32,12 +36,13 @@ public class Utilisateur {
     // Constructeurs, getters et setters
     public Utilisateur() {}
 
-    public Utilisateur(int id, String nom, String prenom, String email, String password ) {
+    public Utilisateur(int id, String nom, String prenom, String email, String password) {
         this.id = id;
         this.nom = nom;
         this.prenom = prenom;
         this.email = email;
         this.password = password;
+        this.admin=false;
     }
 
     public int getId() {
@@ -87,4 +92,13 @@ public class Utilisateur {
     public void setEquipe(Equipe equipe) {
         this.equipe = equipe;
     }
+
+    public Boolean getAdmin() {
+        return admin;
+    }
+    
+    public void setAdmin(Boolean admin) {
+        this.admin = admin;
+    }
+    
 }

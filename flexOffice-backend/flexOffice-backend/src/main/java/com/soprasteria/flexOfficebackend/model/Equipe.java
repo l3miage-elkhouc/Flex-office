@@ -17,6 +17,11 @@ public class Equipe {
 
     @Column(name="nom")
     private String nom;
+
+    
+    @Column(name="nombre_personnes")
+    private int nombre_personnes;
+
     @JsonIgnore
     @OneToMany(mappedBy = "equipe")
 
@@ -48,6 +53,10 @@ public class Equipe {
 
     public String getNom() {
         return nom;
+    }
+
+    public int getNombrePersonnes(){
+        return nombre_personnes;
     }
 
     public void setNom(String nom) {

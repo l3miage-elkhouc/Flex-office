@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class BureauService {
@@ -38,5 +39,10 @@ public class BureauService {
         bureau.setId(id); // Assurez-vous que l'ID est défini pour la mise à jour
         bureauRepository.save(bureau);
     }
+
+    public Optional<Bureau> trouverParNom(String nom) {
+        return bureauRepository.findByNom(nom); // Supposant que cette méthode est définie dans BureauRepository
+    }
+    
     
 }

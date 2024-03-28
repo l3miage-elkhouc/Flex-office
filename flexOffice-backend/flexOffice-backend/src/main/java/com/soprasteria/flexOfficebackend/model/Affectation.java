@@ -1,65 +1,66 @@
-// package com.soprasteria.flexOfficebackend.model;
+package com.soprasteria.flexOfficebackend.model;
 
-// import jakarta.persistence.*;
+import jakarta.persistence.*;
 
-// @Entity
-// @Table(name="affectation")
-// public class Affectation {
+@Entity
+public class Affectation {
 
-//     @Id
-//     @GeneratedValue(strategy = GenerationType.IDENTITY)
-//     @Column(name="id")
-//     private int id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
 
-//     @ManyToOne
-//     @JoinColumn(name="equipe_id")
-//     private Equipe equipe;
+    @Column(name = "jour")
+    private String jour;
 
-//     @ManyToOne
-//     @JoinColumn(name="bureau_id")
-//     private Bureau bureau;
+    @ManyToOne
+    @JoinColumn(name = "idEquipe", referencedColumnName = "id")
+    private Equipe equipe;
 
-//     @Column(name="jour")
-//     private int jour;
+    @ManyToOne
+    @JoinColumn(name = "idBureau", referencedColumnName = "id")
+    private Bureau bureau;
 
-//     // Constructeurs, getters et setters
-//     public Affectation() {}
+    // Constructeur par défaut
+    public Affectation() {
+    }
 
-//     public Affectation(Equipe equipe, Bureau bureau, int jour) {
-//         this.equipe = equipe;
-//         this.bureau = bureau;
-//         this.jour = jour;
-//     }
+    // Constructeur avec tous les champs
+    public Affectation(String jour, Equipe equipe, Bureau bureau) {
+        this.jour = jour;
+        this.equipe = equipe;
+        this.bureau = bureau;
+    }
 
-//     public int getId() {
-//         return id;
-//     }
+    // Getters et Setters
+    public Long getId() {
+        return id;
+    }
 
-//     public void setId(int id) {
-//         this.id = id;
-//     }
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-//     public Equipe getEquipe() {
-//         return equipe;
-//     }
+    public String getJour() {
+        return jour;
+    }
 
-//     public void setEquipe(Equipe equipe) {
-//         this.equipe = equipe;
-//     }
+    public void setJour(String jour) {
+        this.jour = jour;
+    }
 
-//     public Bureau getBureau() {
-//         return bureau;
-//     }
+    public Equipe getEquipe() {
+        return equipe;
+    }
 
-//     public void setBureau(Bureau bureau) {
-//         this.bureau = bureau;
-//     }
+    public void setEquipe(Equipe equipe) {
+        this.equipe = equipe;
+    }
 
-//     public int getJour() {
-//         return jour;
-//     }
+    public Bureau getBureau() {
+        return bureau;
+    }
 
-//     public void setJour(int jour) {
-//         this.jour = jour;
-//     }
-// }
+    public void setBureau(Bureau bureau) {
+        this.bureau = bureau;
+    }
+}

@@ -55,10 +55,14 @@ public ResponseEntity<Object> login(@RequestBody Utilisateur user) {
         if (existingUser.getPassword().equals(password)) {
             // Ajouter le nom de l'équipe à la réponse JSON
             String equipeName = existingUser.getEquipe().getNom(); // Supposant que vous avez une relation entre Utilisateur et Équipe
+            Boolean admin = existingUser.getAdmin();
+
             Map<String, Object> responseData = new HashMap<>();
             responseData.put("message", "Login successful");
             responseData.put("userName", existingUser.getNom());
             responseData.put("equipeName", equipeName);
+            responseData.put("admin", admin);
+
             return ResponseEntity.ok().body(responseData);
         } else {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("{\"error\": \"Invalid email or password\"}");

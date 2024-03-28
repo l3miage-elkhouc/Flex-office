@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class EquipeService {
@@ -38,4 +39,9 @@ public class EquipeService {
         equipe.setId(id); // Assurez-vous que l'ID est défini pour la mise à jour
         equipeRepository.save(equipe);
     }
+
+    public Optional<Equipe> trouverParNom(String nom) {
+        return equipeRepository.findByNom(nom); // Supposant que cette méthode est définie dans EquipeRepository
+    }
+    
 }

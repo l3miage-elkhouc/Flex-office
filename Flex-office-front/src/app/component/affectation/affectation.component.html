@@ -10,12 +10,24 @@
   </div>
    -->
   
-   <div *ngIf="equipes && bureaux">
+   <!-- <div *ngIf="equipes && bureaux">
     <h2>Liste des équipes avec bureau attribué :</h2>
     <ul>
       <li *ngFor="let equipe of equipes">
         <p>Nom de l'équipe : {{ equipe.nom }}</p>
-        <p>Bureau attribué : {{ trouverBureauPourEquipe(equipe) }}</p> <!-- Appel avec l'objet équipe complet -->
+        <p>Bureau attribué : {{ trouverBureauPourEquipe(equipe) }}</p> Appel avec l'objet équipe complet -->
+      <!-- </li>
+    </ul>
+</div> -->
+<!-- affectation.component.html -->
+<!-- src/app/components/affectation/affectation.component.html -->
+<div *ngIf="affectationsSemaine">
+  <div *ngFor="let jour of affectationsSemaine | keyvalue">
+    <h3>{{ jour.key }}</h3>
+    <ul>
+      <li *ngFor="let affectation of jour.value | keyvalue">
+        Équipe: {{ affectation.key }}, Bureau: {{ affectation.value }}
       </li>
     </ul>
+  </div>
 </div>

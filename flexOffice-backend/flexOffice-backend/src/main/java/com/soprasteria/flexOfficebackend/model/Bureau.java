@@ -16,6 +16,9 @@ public class Bureau {
     @Column(name="nom")
     private String nom;
 
+    @Column(name="capacite")
+    private int capacite;
+
     @ManyToMany(mappedBy = "bureaux")
     private List<Equipe> equipes;
 
@@ -43,6 +46,10 @@ public class Bureau {
         this.nom = nom;
     }
 
+    public int getCapacite(){
+
+        return capacite;
+    }
     public List<Equipe> getEquipes() {
         return equipes;
     }

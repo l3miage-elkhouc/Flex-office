@@ -10,6 +10,9 @@ import { DashboardComponent } from './component/dashboard/dashboard.component';
 import { CommonModule } from '@angular/common';
 import { LoginComponent } from './component/login/login.component';
 import { AffectationComponent } from './component/affectation/affectation.component';
+import { VisualisationComponent } from './component//visualisation/visualisation.component';
+import { BureauComponent } from './component/bureau/bureau.component';
+import { EquipeComponent } from './component/equipe/equipe.component';
 
 @NgModule({
   declarations: [
@@ -17,7 +20,10 @@ import { AffectationComponent } from './component/affectation/affectation.compon
     RegisterComponent,
     DashboardComponent,
     LoginComponent,
-    AffectationComponent
+    AffectationComponent,
+    VisualisationComponent,
+    BureauComponent,
+    EquipeComponent
   ],
   imports: [
     BrowserModule,
@@ -26,6 +32,8 @@ import { AffectationComponent } from './component/affectation/affectation.compon
     ReactiveFormsModule,
     FormsModule,
     CommonModule,
+    ReactiveFormsModule
+
   ],
   providers: [
     provideClientHydration()

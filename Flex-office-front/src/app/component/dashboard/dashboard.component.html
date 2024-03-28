@@ -9,7 +9,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Votre Espace Utilisateur - Gestion du Flex Office</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"> -->
     
 </head>
 <body>
@@ -20,10 +20,24 @@
           </a>
           <ul class="navbar-nav ml-auto">
             <li class="nav-item">
-              <a class="nav-link" routerLink="/register" style="color: black;">Register</a>
+                <a class="nav-link" routerLink="/dashboard" style="color: black;">Accueil</a>
+              </li>
+            <!-- Menu déroulant Administration -->
+            <li class="nav-item dropdown" *ngIf="admin">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                Administration
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                <li><a class="dropdown-item" routerLink="/equipe">Gestion des Equipes</a></li>
+                <li><a class="dropdown-item" routerLink="/bureau">Gestion des Bureaux</a></li>
+                <li><a class="dropdown-item" routerLink="/visualisation">Visualisation des Attributions</a></li>
+                </ul>
             </li>
+            <!-- <li class="nav-item">
+              <a class="nav-link" routerLink="/register" style="color: black;">Register</a>
+            </li> -->
             <li class="nav-item">
-              <a class="nav-link" routerLink="/login" style="color: black;">Logout</a>
+              <a class="nav-link" routerLink="/login" style="color: black;">Déconnexion</a>
             </li>
           </ul>
         </div>
@@ -43,12 +57,10 @@
             </div>
             <div class="card-body">
 
-                <p> Vous êtes dans l'équipe <strong>{{ equipeName }} </strong> qui partage votre aventure de travail </p>
+                <p> Vous êtes dans l'équipe <strong>{{ equipeName }} </strong> </p>
                 <!-- Insérer ici la liste des membres de l'équipe -->
             </div>
         </div>
-        
-       
         <!-- Section de la présence hebdomadaire -->
         <div class="card">
             <div class="card-header">
@@ -64,34 +76,9 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <!-- Insérer ici les données dynamiques de présence hebdomadaire -->
-                        <tr>
-                            <td>Lundi</td>
-                            <td>Bureau A</td>
-                        </tr>
-                        <tr>
-                            <td>Mardi</td>
-                            <td>Bureau B</td>
-                        </tr>
-                        <tr>
-                            <td>Mercredi</td>
-                            <td>Bureau C</td>
-                        </tr>
-                        <tr>
-                            <td>Jeudi</td>
-                            <td>Bureau D</td>
-                        </tr>
-                        <tr>
-                            <td>Vendredi</td>
-                            <td>Bureau E</td>
-                        </tr>
-                        <tr>
-                            <td>Samedi</td>
-                            <td>-</td>
-                        </tr>
-                        <tr>
-                            <td>Dimanche</td>
-                            <td>-</td>
+                        <tr *ngFor="let affectation of affectationsSemaine | keyvalue">
+                            <td>{{ affectation.key }}</td>
+                            <td>{{ affectation.value }}</td>
                         </tr>
                     </tbody>
                 </table>

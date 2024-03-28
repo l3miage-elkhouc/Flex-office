@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../auth.service';
+import { AffectationService } from '../../services/affectation.service';
+import { AffectationsSemaine } from '../../models/affectation.model';
 
 @Component({
   selector: 'app-dashboard',
@@ -10,18 +12,27 @@ export class DashboardComponent implements OnInit {
   userName: string = '';
   equipeName: string = '';
   dataLoaded: boolean = false;
+  admin!: boolean ;
+  affectationsSemaine: AffectationsSemaine | undefined;
 
-  constructor(private authService: AuthService) { }
+  constructor(private authService: AuthService, private affectationService: AffectationService) { }
 
   ngOnInit(): void {
     this.authService.getUserData().subscribe(
-      ([userName, equipeName]) => {
+      ([userName, equipeName, admin]) => {
         this.userName = userName;
         this.equipeName = equipeName;
-        this.dataLoaded = true; // Marquer les données comme chargées
+        this.admin=admin;
+        
+        // Récupérer les affectations pour l'équipe de l'utilisateur
+        this.affectationService.getAffectationsEquipe(equipeName).subscribe(affectations => {
+          this.affectationsSemaine = affectations;
+          this.dataLoaded = true;
+        });
       }
     );
   }
+  
 }
 
 
