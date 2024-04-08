@@ -45,4 +45,11 @@ public class UtilisateurService {
     public Utilisateur getUtilisateurByEmail(String email) {
         return utilisateurRepository.findByEmail(email);
     }
+
+    public void updateAdminStatus(int id, boolean isAdmin) {
+        Utilisateur utilisateur = utilisateurRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Utilisateur non trouvé avec l'id " + id));
+        utilisateur.setAdmin(isAdmin);
+        utilisateurRepository.save(utilisateur);
+    }
 }

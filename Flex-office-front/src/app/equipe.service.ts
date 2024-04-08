@@ -9,6 +9,9 @@ import { Bureau } from './bureau';
   providedIn: 'root'
 })
 export class EquipeService {
+  getUtilisateurs() {
+    throw new Error('Method not implemented.');
+  }
   private apiUrl = 'http://localhost:8080'; // Modifier l'URL en fonction de votre API
 
   constructor(private http: HttpClient) {}

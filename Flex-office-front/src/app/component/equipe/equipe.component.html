@@ -18,19 +18,16 @@
                 <a class="nav-link" routerLink="/dashboard" style="color: black;">Accueil</a>
               </li>
             <!-- Menu déroulant Administration -->
-            <!-- <li class="nav-item dropdown" *ngIf="admin">
+            <li class="nav-item dropdown" *ngIf="admin">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                 Administration
                 </a>
                 <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                <li><a class="dropdown-item" routerLink="/add-bureau">Gestion des Equipes</a></li>
-                <li><a class="dropdown-item" routerLink="/add-equipe">Gestion des Bureaux</a></li>
-                <li><a class="dropdown-item" routerLink="/visualisation">Visualisation des Attributions</a></li>
+                <li><a class="dropdown-item" routerLink="/equipe">Gestion des Equipes</a></li>
+                <li><a class="dropdown-item" routerLink="/bureau">Gestion des Bureaux</a></li>
+                <li><a class="dropdown-item" routerLink="/visualisation">Gestion des Attributions</a></li>
                 </ul>
-            </li> -->
-            <!-- <li class="nav-item">
-              <a class="nav-link" routerLink="/register" style="color: black;">Register</a>
-            </li> -->
+            </li>
             <li class="nav-item">
               <a class="nav-link" routerLink="/login" style="color: black;">Déconnexion</a>
             </li>
@@ -38,8 +35,6 @@
         </div>
       </nav>
       <div class="container">
-
- 
         <div class="card-body">
           <div class="card">
             <h3 class="card-header" style="text-align: center;">
@@ -54,23 +49,22 @@
                         </button>
                       </h2>
                       <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse ">
-                        <form class="form-inline m-4">
+                        <form (ngSubmit)="ajouterEquipe()" class="form-inline m-4">
                             <div class="form-group mb-2">
                               <label for="nom" class="sr-only">Nom de l'équipe</label>
-                              <input type="text" class="form-control" id="nom" formControlName="nom" placeholder="Nom de l'équipe">
-                            </div>
+                              <input type="text"  class="form-control" id="nom" [(ngModel)]="nom" name="nom" placeholder="Nom de l'équipe">                            </div>
                             <div class="form-group mx-sm-3 mb-2">
-                              <label for="capacite" class="sr-only">Nombre de personnes</label>
-                              <input type="text" class="form-control" id="capacite" formControlName="capacite" placeholder="Nombre de personnes">
-                            </div>
-                            <button type="submit" class="btn btn-primary mb-2">Ajouter</button>
+                              <label for="nombrePersonnes" class="sr-only">Nombre de personnes</label>
+                              <input type="number" class="form-control" id="nombrePersonnes" [(ngModel)]="nombrePersonnes" name="nombrePersonnes" placeholder="Nombre de personnes">                            </div>
+                              
+                              <button type="submit" class="btn btn-primary mb-2">Ajouter</button>
                           </form>
                       </div>
                     </div>
                     <div class="accordion-item">
                       <h2 class="accordion-header">
                         <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseTwo" aria-expanded="false" aria-controls="panelsStayOpen-collapseTwo">
-                        Modifier une équipe
+                        Modifier le nombre de personnes d'une équipe
                         </button>
                       </h2>
                       <div id="panelsStayOpen-collapseTwo" class="accordion-collapse collapse">
@@ -78,25 +72,50 @@
                           <form id="editForm">
                             <div class="form-group">
                               <label for="bureauEditSelect">Sélectionnez l'équipe à Modifier :</label>
-                              <select class="form-control" id="bureauEditSelect" onchange="loadCurrentBureauInfo()">
-                                <!-- Les options des équipes sont générées dynamiquement ici -->
+                              <select class="form-control" id="bureauEditSelect" [(ngModel)]="selectedEquipeId" name="selectedEquipe" (change)="loadCurrentEquipeInfo()">
+                                <option *ngFor="let equipe of equipes" [value]="equipe.id">{{ equipe.nom }}</option>
                               </select>
                             </div>
-                            <!-- Les champs de formulaire pour la modification -->
                             <div class="form-group">
-                              <label for="editNom">Nom de l'équipe</label>
-                              <input type="text" class="form-control" id="editNom">
+                              <label for="nombrePersonnes">Nombre de personnes</label>
+                            <input type="number" class="form-control" id="nombrePersonnes" [(ngModel)]="nombrePersonnes" name="nombrePersonnes" placeholder="Nombre de personnes">
                             </div>
-                            <div class="form-group">
-                              <label for="editCapacite">Nombre de personnes</label>
-                              <input type="text" class="form-control" id="editCapacite">
-                            </div>
-                            <button type="button" class="btn btn-primary" onclick="updateBureau()">Modifier</button>
+                            
+                            <button type="button" class="btn btn-primary" (click)="updateEquipe()">Modifier</button>
                           </form>
                         </div>
                       </div>
                       
                     </div>
+
+                    <div class="accordion-item">
+                      <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseDays" aria-expanded="false" aria-controls="panelsStayOpen-collapseDays">
+                          Modifier les jours de présence d'une l'équipe
+                        </button>
+                      </h2>
+                      <div id="panelsStayOpen-collapseDays" class="accordion-collapse collapse">
+                        <div class="accordion-body">
+                          <form>
+                            <div class="form-group">
+                              <label>Sélectionnez l'équipe à Modifier :</label>
+                              <select class="form-control" [(ngModel)]="selectedEquipeId" name="selectedEquipeDays" (change)="loadCurrentEquipeDays()">
+                                <option *ngFor="let equipe of equipes" [value]="equipe.id">{{ equipe.nom }}</option>
+                              </select>
+                            </div>
+                            <div class="form-group">
+                              <label>Jours de présence :</label>
+                              <div *ngFor="let jour of jours; let i = index" >
+                                <input type="checkbox" [id]="'jour'+i" [(ngModel)]="joursSelectionnes[i]" [name]="'jour'+i">
+                                <label [for]="'jour'+i">{{ jour }}</label>
+                              </div>
+                            </div>
+                            <button type="button" class="btn btn-primary" (click)="updateEquipeDays()">Modifier les jours</button>
+                          </form>
+                        </div>
+                      </div>
+                    </div>
+                    
                     <div class="accordion-item">
                       <h2 class="accordion-header">
                         <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseThree" aria-expanded="false" aria-controls="panelsStayOpen-collapseThree">
@@ -108,14 +127,41 @@
                           <form id="deleteForm">
                             <div class="form-group">
                               <label for="bureauSelect">Sélectionnez l'équipe à Supprimer :</label>
-                              <select class="form-control" id="bureauSelect">
-                                <!-- Les options des bureaux sont générées dynamiquement ici -->
+                              <select class="form-control" id="EquipeDelelteSelect" name="selectedEquipe" [(ngModel)]="selectedEquipeId" (change)="loadCurrentEquipeInfo()">
+                                <option *ngFor="let equipe of equipes" [value]="equipe.id">{{ equipe.nom }}</option>
                               </select>
                             </div>
-                            <button type="button" class="btn btn-danger" onclick="confirmDeletion()">Supprimer</button>
+                            <button type="button" class="btn btn-danger" (click)="confirmDeletion()">Supprimer</button>
                           </form>
                         </div>
                       </div>
+                    </div>
+                      <div class="accordion-item">
+                        <h2 class="accordion-header">
+                          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseFour" aria-expanded="false" aria-controls="panelsStayOpen-collapseFour">
+                            Gérer les droits d'administration
+                          </button>
+                        </h2>
+                        <div id="panelsStayOpen-collapseFour" class="accordion-collapse collapse">
+                          <div class="accordion-body">
+                            <form id="adminRightsForm">
+                              <div class="form-group">
+                                <select class="form-control" id="userSelect" (change)="onUserSelected($event)" name="selectedUser">
+                                  <label for="userSelect">Sélectionnez un utilisateur :</label>
+                                  <option *ngFor="let utilisateur of utilisateurs" [value]="utilisateur.id" [ngValue]="utilisateur">{{ utilisateur.nom }}</option>
+                                </select>
+                                
+                              </div>
+                              <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="adminCheck" [(ngModel)]="selectedUserIsAdmin" name="adminStatus">
+                                <label class="form-check-label" for="adminCheck">
+                                  Administrateur
+                                </label>
+                              </div>
+                              <button type="button" class="btn btn-primary" (click)="updateUserRights()">Appliquer</button>
+                            </form>
+                          </div>
+                        </div>                      
                       
                     </div>
                   </div> 

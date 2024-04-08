@@ -1,4 +1,5 @@
 package com.soprasteria.flexOfficebackend.model;
+import java.time.LocalDate;
 
 import jakarta.persistence.*;
 
@@ -9,8 +10,9 @@ public class Affectation {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Column(name = "jour")
-    private String jour;
+    @Column(name = "date")
+    private LocalDate date; 
+
 
     @ManyToOne
     @JoinColumn(name = "idEquipe", referencedColumnName = "id")
@@ -25,8 +27,8 @@ public class Affectation {
     }
 
     // Constructeur avec tous les champs
-    public Affectation(String jour, Equipe equipe, Bureau bureau) {
-        this.jour = jour;
+    public Affectation(LocalDate date, Equipe equipe, Bureau bureau) {
+        this.date = date;
         this.equipe = equipe;
         this.bureau = bureau;
     }
@@ -40,12 +42,12 @@ public class Affectation {
         this.id = id;
     }
 
-    public String getJour() {
-        return jour;
+    public LocalDate getDate() {
+        return date;
     }
 
-    public void setJour(String jour) {
-        this.jour = jour;
+    public void setDate(LocalDate date) {
+        this.date = date;
     }
 
     public Equipe getEquipe() {

@@ -1,81 +1,113 @@
-package com.soprasteria.flexOfficebackend.model;
+        package com.soprasteria.flexOfficebackend.model;
 
-import java.util.List;
+        import java.math.BigDecimal;
+        import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+        import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import jakarta.persistence.*;
+        import jakarta.persistence.*;
 
-@Entity
-@Table(name="equipe")
-public class Equipe {
+        @Entity
+        @Table(name="equipe")
+        public class Equipe {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="id")
-    private int id;
+            @Id
+            @GeneratedValue(strategy = GenerationType.IDENTITY)
+            @Column(name="id")
+            private int id;
 
-    @Column(name="nom")
-    private String nom;
+            @Column(name="nom")
+            private String nom;
 
-    
-    @Column(name="nombre_personnes")
-    private int nombre_personnes;
+            
+            @Column(name="nombre_personnes")
+            private int nombre_personnes;
 
-    @JsonIgnore
-    @OneToMany(mappedBy = "equipe")
+            @Column(name="taux_presence")
+            private BigDecimal taux_presence = BigDecimal.valueOf(60);
 
-    private List<Utilisateur> utilisateurs;
+            @JsonIgnore
+            @OneToMany(mappedBy = "equipe")
 
-    @ManyToMany
-    @JoinTable(
-            name = "equipe_bureau",
-            joinColumns = @JoinColumn(name = "equipe_id"),
-            inverseJoinColumns = @JoinColumn(name = "bureau_id"))
-    private List<Bureau> bureaux;
-    
 
-    // Constructeurs, getters et setters
-    public Equipe() {}
+            private List<Utilisateur> utilisateurs;
 
-    public Equipe(int id, String nom) {
-        this.id = id;
-        this.nom = nom;
-    }
+            @ManyToMany
+            @JoinTable(
+                    name = "equipe_bureau",
+                    joinColumns = @JoinColumn(name = "equipe_id"),
+                    inverseJoinColumns = @JoinColumn(name = "bureau_id"))
+            private List<Bureau> bureaux;
+            
 
-    public int getId() {
-        return id;
-    }
+            // Constructeurs, getters et setters
+            public Equipe() {
+                this.taux_presence = BigDecimal.valueOf(60);
+            }
 
-    public void setId(int id) {
-        this.id = id;
-    }
+            public Equipe(int id, String nom) {
+                this.id = id;
+                this.nom = nom;
+                this.taux_presence = BigDecimal.valueOf(60);
+            }
 
-    public String getNom() {
-        return nom;
-    }
 
-    public int getNombrePersonnes(){
-        return nombre_personnes;
-    }
+            @ElementCollection(fetch = FetchType.EAGER)
+            @CollectionTable(name = "jours_de_presence", joinColumns = @JoinColumn(name = "equipe_id"))
+            @Column(name = "jour")
+            private List<Integer> joursDePresence;
+        
+            public int getId() {
+                return id;
+            }
 
-    public void setNom(String nom) {
-        this.nom = nom;
-    }
+            public void setId(int id) {
+                this.id = id;
+            }
 
-    public List<Utilisateur> getUtilisateurs() {
-        return utilisateurs;
-    }
+            public String getNom() {
+                return nom;
+            }
 
-    public void setUtilisateurs(List<Utilisateur> utilisateurs) {
-        this.utilisateurs = utilisateurs;
-    }
+            public int getNombrePersonnes(){
+                return nombre_personnes;
+            }
 
-    public List<Bureau> getBureaux() {
-        return bureaux;
-    }
+            public void setNom(String nom) {
+                this.nom = nom;
+            }
+            public void setNombrePersonnes(int nombre_personnes) {
+                this.nombre_personnes = nombre_personnes;
+            }
+            public BigDecimal getTauxPresence() {
+                return taux_presence;
+            }
 
-    public void setBureaux(List<Bureau> bureaux) {
-        this.bureaux = bureaux;
-    }
-}
+            public void setTauxPresence(BigDecimal taux_presence) {
+                this.taux_presence = taux_presence;
+            }
+
+            public List<Integer> getJoursDePresence() {
+                return joursDePresence;
+            }
+
+            public void setJoursDePresence(List<Integer> joursDePresence) {
+                this.joursDePresence = joursDePresence;
+            }
+
+            public List<Utilisateur> getUtilisateurs() {
+                return utilisateurs;
+            }
+
+            public void setUtilisateurs(List<Utilisateur> utilisateurs) {
+                this.utilisateurs = utilisateurs;
+            }
+
+            public List<Bureau> getBureaux() {
+                return bureaux;
+            }
+
+            public void setBureaux(List<Bureau> bureaux) {
+                this.bureaux = bureaux;
+            }
+        }

@@ -18,19 +18,16 @@
                 <a class="nav-link" routerLink="/dashboard" style="color: black;">Accueil</a>
               </li>
             <!-- Menu déroulant Administration -->
-            <!-- <li class="nav-item dropdown" *ngIf="admin">
+            <li class="nav-item dropdown" *ngIf="admin">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                 Administration
                 </a>
                 <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                <li><a class="dropdown-item" routerLink="/add-bureau">Gestion des Equipes</a></li>
-                <li><a class="dropdown-item" routerLink="/add-equipe">Gestion des Bureaux</a></li>
-                <li><a class="dropdown-item" routerLink="/visualisation">Visualisation des Attributions</a></li>
+                <li><a class="dropdown-item" routerLink="/equipe">Gestion des Equipes</a></li>
+                <li><a class="dropdown-item" routerLink="/bureau">Gestion des Bureaux</a></li>
+                <li><a class="dropdown-item" routerLink="/visualisation">Gestion des Attributions</a></li>
                 </ul>
-            </li> -->
-            <!-- <li class="nav-item">
-              <a class="nav-link" routerLink="/register" style="color: black;">Register</a>
-            </li> -->
+            </li>
             <li class="nav-item">
               <a class="nav-link" routerLink="/login" style="color: black;">Déconnexion</a>
             </li>
@@ -52,23 +49,24 @@
                     </button>
                   </h2>
                   <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse ">
-                    <form class="form-inline m-4">
-                        <div class="form-group mb-2">
-                          <label for="nom" class="sr-only">Nom du Bureau</label>
-                          <input type="text" class="form-control" id="nom" formControlName="nom" placeholder="Nom du Bureau">
-                        </div>
-                        <div class="form-group mx-sm-3 mb-2">
-                          <label for="capacite" class="sr-only">Capacité</label>
-                          <input type="text" class="form-control" id="capacite" formControlName="capacite" placeholder="Capacité">
-                        </div>
-                        <button type="submit" class="btn btn-primary mb-2">Ajouter</button>
-                      </form>
+                    <form (ngSubmit)="ajouterBureau()" class="m-4 form-inline">
+                      <div class="form-group mb-2">
+                        <label for="nom" class="sr-only">Nom du Bureau</label>
+                        <input type="text" class="form-control" id="nom" [(ngModel)]="nom" name="nom" placeholder="Nom du Bureau">
+                      </div>
+                      <div class="form-group mx-sm-3 mb-2">
+                        <label for="capacite" class="sr-only">Capacité</label>
+                        <input type="number" class="form-control" id="capacite" [(ngModel)]="capacite" name="capacite" placeholder="Capacité">
+                      </div>
+                      <button type="submit" class="btn btn-primary mb-2">Ajouter</button>
+                    </form>      
                   </div>
+                  
                 </div>
                 <div class="accordion-item">
                   <h2 class="accordion-header">
                     <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseTwo" aria-expanded="false" aria-controls="panelsStayOpen-collapseTwo">
-                    Modifier un Bureau
+                    Modifier la capacité d'un Bureau
                     </button>
                   </h2>
                   <div id="panelsStayOpen-collapseTwo" class="accordion-collapse collapse">
@@ -76,20 +74,15 @@
                       <form id="editForm">
                         <div class="form-group">
                           <label for="bureauEditSelect">Sélectionnez le Bureau à Modifier :</label>
-                          <select class="form-control" id="bureauEditSelect" onchange="loadCurrentBureauInfo()">
-                            <!-- Les options des bureaux sont générées dynamiquement ici -->
+                          <select class="form-control" id="bureauEditSelect" name="selectedBureau" [(ngModel)]="selectedBureauId" (change)="loadCurrentBureauInfo()">
+                            <option *ngFor="let bureau of bureaux" [value]="bureau.id">{{ bureau.nom }}</option>
                           </select>
-                        </div>
-                        <!-- Les champs de formulaire pour la modification -->
-                        <div class="form-group">
-                          <label for="editNom">Nom du Bureau</label>
-                          <input type="text" class="form-control" id="editNom">
                         </div>
                         <div class="form-group">
                           <label for="editCapacite">Capacité</label>
-                          <input type="text" class="form-control" id="editCapacite">
+                          <input type="number" class="form-control"  id="editCapacite" name="capacite" [(ngModel)]="selectedBureauCapacite" placeholder="Capacité">
                         </div>
-                        <button type="button" class="btn btn-primary" onclick="updateBureau()">Modifier</button>
+                        <button type="button" class="btn btn-primary" (click)="updateBureau()">Modifier</button>
                       </form>
                     </div>
                   </div>
@@ -106,20 +99,36 @@
                       <form id="deleteForm">
                         <div class="form-group">
                           <label for="bureauSelect">Sélectionnez le Bureau à Supprimer :</label>
-                          <select class="form-control" id="bureauSelect">
-                            <!-- Les options des bureaux sont générées dynamiquement ici -->
+                          <!-- Correction pour le select dans la section Supprimer un Bureau -->
+                          <select class="form-control" name="selectedBureau" id="bureauSelect" [(ngModel)]="selectedBureauId">
+                            <option *ngFor="let bureau of bureaux" [value]="bureau.id">{{ bureau.nom }}</option>
                           </select>
+                          <button type="button" class="btn btn-danger" (click)="supprimerBureau(selectedBureauId)">Supprimer</button>
                         </div>
-                        <button type="button" class="btn btn-danger" onclick="confirmDeletion()">Supprimer</button>
+                        <!-- <button type="button" class="btn btn-danger" (click)="supprimerBureau(bureau.id)">Supprimer</button> -->
                       </form>
                     </div>
                   </div>
                   
                 </div>
-              </div> 
-              
+              </div>    
         </div>
 
+                            <div class="modal" tabindex="-1" role="dialog" [class.show]="showSuccessModal">
+                      <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <h5 class="modal-title">Ajout Réussi</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="showSuccessModal = false">
+                              <span aria-hidden="true">&times;</span>
+                            </button>
+                          </div>
+                          <div class="modal-body">
+                            Le bureau a été ajouté avec succès.
+                          </div>
+                        </div>
+                      </div>
+                    </div>
     </div>
 </div>
 

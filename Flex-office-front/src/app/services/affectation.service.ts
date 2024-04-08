@@ -19,5 +19,10 @@ export class AffectationService {
   getAffectationsEquipe(nomEquipe: string): Observable<any> {
     return this.http.get(`${this.baseUrl}/affectations/${nomEquipe}`);
   }
+
+  // Méthode pour déclencher l'affectation
+  affecterBureaux() {
+    return this.http.post(`${this.baseUrl}/affecterBureaux`, {});
+  }
   
 }

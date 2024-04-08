@@ -46,6 +46,10 @@ public class Bureau {
         this.nom = nom;
     }
 
+    public void setCapacite(int capacite) {
+        this.capacite = capacite;
+    }
+
     public int getCapacite(){
 
         return capacite;

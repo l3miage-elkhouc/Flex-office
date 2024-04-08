@@ -1,17 +1,24 @@
  package com.soprasteria.flexOfficebackend.controller;
 
 import java.util.List;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
+
 import com.soprasteria.flexOfficebackend.model.Utilisateur;
+import com.soprasteria.flexOfficebackend.repository.UtilisateurRepository;
 import com.soprasteria.flexOfficebackend.service.UtilisateurService;
+
 
     @CrossOrigin(origins="*")
     @RestController
@@ -68,6 +75,26 @@ import com.soprasteria.flexOfficebackend.service.UtilisateurService;
         public void updateUtilisateur(@RequestBody Utilisateur utilisateur , @PathVariable int id){
             userService.updateUtilisateur(utilisateur,id);
         }
+
+    //     @PostMapping("/utilisateurs/{id}/adminStatus")
+    //     public ResponseEntity<?> updateAdminStatus(@PathVariable int id, @RequestBody Map<String, Boolean> update) {
+    //     boolean isAdmin = update.getOrDefault("admin", false);
+    //     userService.updateAdminStatus(id, isAdmin);
+    //     return ResponseEntity.ok().build();
+    // }
+
+    // Dans votre UserController ou un contrôleur similaire
+@Autowired
+private UtilisateurRepository utilisateurRepository;
+
+@PostMapping("/utilisateurs/{id}/admin")
+public ResponseEntity<?> updateAdminStatus(@PathVariable Integer id, @RequestBody Map<String, Boolean> payload) {
+    Utilisateur utilisateur = utilisateurRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+    utilisateur.setAdmin(payload.get("admin"));
+    utilisateurRepository.save(utilisateur);
+    return ResponseEntity.ok().build();
+}
+
 
 
     }

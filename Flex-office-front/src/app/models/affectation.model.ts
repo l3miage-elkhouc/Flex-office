@@ -7,4 +7,17 @@ export interface AffectationJour {
   export interface AffectationsSemaine {
     [jour: string]: AffectationJour;
   }
+
+  export interface Affectation {
+    date: string;
+    bureau: string;
+  }
+  export interface TeamAffectation {
+    equipe: string;
+    Lundi?: string;
+    Mardi?: string;
+    Mercredi?: string;
+    Jeudi?: string;
+    Vendredi?: string;
+  }
   
