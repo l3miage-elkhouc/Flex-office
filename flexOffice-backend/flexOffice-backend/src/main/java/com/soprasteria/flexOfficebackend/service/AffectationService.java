@@ -149,10 +149,7 @@ import com.soprasteria.flexOfficebackend.repository.AffectationRepository;
 import jakarta.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cglib.core.Local;
 import org.springframework.stereotype.Service;
-import org.springframework.scheduling.annotation.Scheduled;
-
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.DayOfWeek;
@@ -212,33 +209,42 @@ public class AffectationService {
         affectationRepository.deleteById(id);
     }
 
-    public Map<LocalDate, Map<String, String>> recupererAffectationsExistantes() {
+    public Map<LocalDate, Map<String, List<String>>> recupererAffectationsExistantes() {
         // Convertir Iterable en List
         List<Affectation> affectations = StreamSupport.stream(affectationRepository.findAll().spliterator(), false)
-                                                    .collect(Collectors.toList());
-        
-        Map<LocalDate, Map<String, String>> resultat = affectations.stream()
+                                                        .collect(Collectors.toList());
+    
+        // On ajuste ici pour créer une Map<LocalDate, Map<String, List<String>>>
+        Map<LocalDate, Map<String, List<String>>> resultat = affectations.stream()
             .collect(Collectors.groupingBy(Affectation::getDate,
-                    Collectors.toMap(
-                        affectation -> affectation.getEquipe().getNom(),
-                        affectation -> affectation.getBureau().getNom(),
-                        (bureau1, bureau2) -> bureau1
+                    Collectors.groupingBy(affectation -> affectation.getEquipe().getNom(),
+                            Collectors.mapping(affectation -> affectation.getBureau().getNom(), Collectors.toList())
                     )));
-
+    
         return resultat;
     }
-
     
 
-    public Map<LocalDate, String> getAffectationsParEquipe(String nomEquipe) {
-        List<Affectation> affectations = affectationRepository.findByNomEquipe(nomEquipe);
-        Map<LocalDate, String> affectationsEquipe = new HashMap<>();
-        
-        for (Affectation affectation : affectations) {
-            affectationsEquipe.put(affectation.getDate(), affectation.getBureau().getNom());
-        }   
-        return affectationsEquipe;
-    }
+    
+public Map<LocalDate, List<String>> getAffectationsParEquipe(String nomEquipe) {
+    List<Affectation> affectations = affectationRepository.findByNomEquipe(nomEquipe);
+    Map<LocalDate, List<String>> affectationsEquipe = new HashMap<>();
+
+    for (Affectation affectation : affectations) {
+        LocalDate date = affectation.getDate();
+        String bureauNom = affectation.getBureau().getNom();
+
+        // Vérifie si la date existe déjà dans la map
+        if (!affectationsEquipe.containsKey(date)) {
+            // Si non, crée une nouvelle liste pour cette date
+            affectationsEquipe.put(date, new ArrayList<>());
+        }
+        // Ajoute le bureau à la liste existante pour cette date
+        affectationsEquipe.get(date).add(bureauNom);
+    }   
+    return affectationsEquipe;
+}
+
 
 
 @Transactional
@@ -289,91 +295,141 @@ public void sauvegarderAffectations(Map<LocalDate, Map<String, List<String>>> af
                         .intValue();
     }
 
+    // public Map<LocalDate, Map<String, List<String>>> affecterBureaux() {
+    //     // La structure des affectations est mise à jour pour permettre à chaque équipe d'être associée à plusieurs bureaux chaque jour.
+    //     Map<LocalDate, Map<String, List<String>>> affectations = new LinkedHashMap<>();
+    
+    //     LocalDate startOfWeek = LocalDate.now().with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY));
+    //     LocalDate endOfWeek = startOfWeek.plusDays(4);
+    
+    //     for (LocalDate date = startOfWeek; !date.isAfter(endOfWeek); date = date.plusDays(1)) {
+
+    //         System.out.println(date);
+
+    //         affectations.put(date, new LinkedHashMap<>());
+    //         // Liste de tous les bureaux disponibles.
+    //         List<Bureau> bureauxDisponibles = new ArrayList<>(bureauService.getBureaux());
+    //         System.out.println(bureauxDisponibles);
+    //         for (Equipe equipe : equipeService.getEquipes()) {
+    //             //NB: S'assurer que la liste des jours de présence est initialisée pour éviter les NullPointerExceptions
+    //             if (equipe.getJoursDePresence() == null || !equipe.getJoursDePresence().contains(date.getDayOfWeek().getValue())) {
+    //                 continue; // Passer à la prochaine équipe si aujourd'hui n'est pas un jour de présence pour l'équipe
+    //             }
+    //             List<String> bureauxAttribues = new ArrayList<>();
+    //             // Calculez le nombre de postes nécessaires pour l'équipe donc le nombre de personne par l'équipe.
+    //             int membresRestants = equipe.getNombrePersonnes();
+
+    //             while (membresRestants > 0 && !bureauxDisponibles.isEmpty()) {
+    //                 Bureau bureauChoisi = choisirBureauPourEquipe(membresRestants, bureauxDisponibles);
+    //                 if (bureauChoisi != null) {
+    //                     bureauxAttribues.add(bureauChoisi.getNom()); // Ajoute le bureau attribué à la liste.
+    //                     int nouvelleCapacite = bureauChoisi.getCapacite() - membresRestants;
+    //                     membresRestants -= bureauChoisi.getCapacite(); // Réduit le nombre de postes restants à pourvoir. 
+    //                     if(nouvelleCapacite<=0){
+    //                         bureauxDisponibles.remove(bureauChoisi); // Retire le bureau choisi des bureaux disponibles.
+    //                     }
+    //                 } else {
+    //                     //A faire Gestion du cas où il n'est pas possible d'attribuer suffisamment de bureaux.
+    //                     break;
+    //                 }
+    //             }
+    
+    //             if (!bureauxAttribues.isEmpty()) {
+    //                 affectations.get(date).put(equipe.getNom(), bureauxAttribues);
+    //             } else {
+    //                 System.out.println("Aucun bureau disponible pour l'équipe " + equipe.getNom() + " le " + date);
+    //             }
+    //         }
+    //     }
+    //     return affectations;
+    // }
+
     public Map<LocalDate, Map<String, List<String>>> affecterBureaux() {
-        // La structure des affectations est mise à jour pour permettre à chaque équipe d'être associée à plusieurs bureaux chaque jour.
         Map<LocalDate, Map<String, List<String>>> affectations = new LinkedHashMap<>();
     
         LocalDate startOfWeek = LocalDate.now().with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY));
         LocalDate endOfWeek = startOfWeek.plusDays(4);
     
+        // Itération pour chaque jour de la semaine de travail
         for (LocalDate date = startOfWeek; !date.isAfter(endOfWeek); date = date.plusDays(1)) {
-
             System.out.println(date);
-
+    
             affectations.put(date, new LinkedHashMap<>());
-            // Liste de tous les bureaux disponibles.
             List<Bureau> bureauxDisponibles = new ArrayList<>(bureauService.getBureaux());
+            // Map pour suivre la capacité restante des bureaux
+            Map<Bureau, Integer> capacitesRestantes = bureauxDisponibles.stream()
+                                                                         .collect(Collectors.toMap(bureau -> bureau, Bureau::getCapacite));
+    
             for (Equipe equipe : equipeService.getEquipes()) {
-                //NB: S'assurer que la liste des jours de présence est initialisée pour éviter les NullPointerExceptions
+                // Vérifier si l'équipe travaille ce jour-là
                 if (equipe.getJoursDePresence() == null || !equipe.getJoursDePresence().contains(date.getDayOfWeek().getValue())) {
-                    continue; // Passer à la prochaine équipe si aujourd'hui n'est pas un jour de présence pour l'équipe
+                    continue; // Passer à la prochaine équipe si aujourd'hui n'est pas un jour de présence
                 }
+    
                 List<String> bureauxAttribues = new ArrayList<>();
-                // Calculez le nombre de postes nécessaires pour l'équipe donc le nombre de personne par l'équipe.
                 int membresRestants = equipe.getNombrePersonnes();
-
+    
                 while (membresRestants > 0 && !bureauxDisponibles.isEmpty()) {
-                    Bureau bureauChoisi = choisirBureauPourEquipe(membresRestants, bureauxDisponibles);
+                    Bureau bureauChoisi = choisirBureauPourEquipe(membresRestants, bureauxDisponibles, capacitesRestantes);
                     if (bureauChoisi != null) {
-                        bureauxAttribues.add(bureauChoisi.getNom()); // Ajoute le bureau attribué à la liste.
-                        int nouvelleCapacite = bureauChoisi.getCapacite() - membresRestants;
-                        membresRestants -= bureauChoisi.getCapacite(); // Réduit le nombre de postes restants à pourvoir.
-                        
-                        if(nouvelleCapacite<=0){
-                            bureauxDisponibles.remove(bureauChoisi); // Retire le bureau choisi des bureaux disponibles.
+                        int capaciteRestante = capacitesRestantes.get(bureauChoisi);
+                        int placesUtilisees = Math.min(capaciteRestante, membresRestants);
+                        membresRestants -= placesUtilisees;
+                        capaciteRestante -= placesUtilisees;
+                        capacitesRestantes.put(bureauChoisi, capaciteRestante); // Mise à jour de la capacité restante
+    
+                        if (!bureauxAttribues.contains(bureauChoisi.getNom())) {
+                            bureauxAttribues.add(bureauChoisi.getNom()); // Ajoute le bureau attribué à la liste
+                        }
+    
+                        if (capaciteRestante <= 0) {
+                            bureauxDisponibles.remove(bureauChoisi); // Retire le bureau choisi des bureaux disponibles si sa capacité est épuisée
                         }
                     } else {
-                        //A faire Gestion du cas où il n'est pas possible d'attribuer suffisamment de bureaux.
+                        // Gestion du cas où il n'est pas possible d'attribuer suffisamment de bureaux
+                        System.out.println("Aucun bureau disponible pour l'équipe " + equipe.getNom() + " le " + date);
                         break;
                     }
                 }
     
                 if (!bureauxAttribues.isEmpty()) {
                     affectations.get(date).put(equipe.getNom(), bureauxAttribues);
-                } else {
-                    System.out.println("Aucun bureau disponible pour l'équipe " + equipe.getNom() + " le " + date);
                 }
             }
         }
-    
         return affectations;
     }
+    private Bureau choisirBureauPourEquipe(int membresRestants, List<Bureau> bureauxDisponibles, Map<Bureau, Integer> capacitesRestantes) {
+        // Filtrez d'abord les bureaux qui peuvent accueillir les membres restants basés sur la capacité restante.
+        List<Bureau> bureauxCandidates = bureauxDisponibles.stream()
+                .filter(bureau -> capacitesRestantes.get(bureau) >= membresRestants)
+                .collect(Collectors.toList());
     
-    private Bureau choisirBureauPourEquipe(int membresRestants, List<Bureau> bureauxDisponibles) {
-        // Cette méthode choisit un bureau adapté à la taille de l'équipe restante à placer. 
-        for (Bureau bureau : bureauxDisponibles) {
-            if (bureau.getCapacite() >= membresRestants) {
-                return bureau;
-            }
+        if (!bureauxCandidates.isEmpty()) {
+            // Choisissez le bureau avec la capacité restante la plus proche du nombre de membres restants,
+            // pour optimiser l'utilisation de l'espace.
+            return Collections.min(bureauxCandidates, Comparator.comparingInt(bureau -> capacitesRestantes.get(bureau) - membresRestants));
+        } else {
+            // Si aucun bureau ne peut accueillir tous les membres restants, choisissez le bureau avec la plus grande capacité restante.
+            // Cela peut être nécessaire si vous décidez de permettre l'attribution de plusieurs bureaux à une équipe.
+            return bureauxDisponibles.stream()
+                    .max(Comparator.comparingInt(capacitesRestantes::get))
+                    .orElse(null); // Retourne null si tous les bureaux sont pleins ou si la liste est vide.
         }
-        // Retourne le plus grand bureau disponible si aucun n'est assez grand pour toute l'équipe.
-        return bureauxDisponibles.isEmpty() ? null : Collections.max(bureauxDisponibles, Comparator.comparingInt(Bureau::getCapacite));
     }
     
-    public Map<Bureau, Integer> calculerPlacesDisponibles() {
-        List<Bureau> bureaux = bureauService.getBureaux();
-        // Cela suppose l'existence d'une méthode getAffectationsActives() renvoyant toutes les affectations actuellement valides
-        List<Affectation> affectations = recupererToutesAffectations();
     
-        // Préparation d'une map pour compter le nombre total de places occupées par bureau
-        Map<Bureau, Integer> placesOccupéesParBureau = new HashMap<>();
+    // private Bureau choisirBureauPourEquipe(int membresRestants, List<Bureau> bureauxDisponibles) {
+    //     // Cette méthode choisit un bureau adapté à la taille de l'équipe restante à placer. 
+    //     for (Bureau bureau : bureauxDisponibles) {
+    //         if (bureau.getCapacite() >= membresRestants) {
+    //             return bureau;
+    //         }
+    //     }
+    //     // Retourne le plus grand bureau disponible si aucun n'est assez grand pour toute l'équipe.
+    //     return bureauxDisponibles.isEmpty() ? null : Collections.max(bureauxDisponibles, Comparator.comparingInt(Bureau::getCapacite));
+    // }
+
     
-        for (Affectation affectation : affectations) {
-            Bureau bureau = affectation.getBureau();
-            int nombrePersonnes = affectation.getEquipe().getNombrePersonnes(); // Cela suppose que chaque affectation a une équipe avec un nombre défini de personnes
-    
-            // Ajout ou mise à jour du nombre de personnes par bureau dans la map
-            placesOccupéesParBureau.merge(bureau, nombrePersonnes, Integer::sum);
-        }
-    
-        // Calcul des places disponibles par bureau
-        Map<Bureau, Integer> placesDisponiblesParBureau = new HashMap<>();
-        for (Bureau bureau : bureaux) {
-            int placesOccupées = placesOccupéesParBureau.getOrDefault(bureau, 0);
-            int placesDisponibles = Math.max(0, bureau.getCapacite() - placesOccupées); // S'assurer que le nombre de places disponibles ne soit jamais négatif
-            placesDisponiblesParBureau.put(bureau, placesDisponibles);
-        }
-        return placesDisponiblesParBureau;
-    }
 }
 

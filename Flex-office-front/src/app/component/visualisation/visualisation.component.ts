@@ -4,6 +4,7 @@ import { AffectationService } from '../../services/affectation.service';
 import { EquipeService } from '../../services/equipe.service';
 import { AffectationsSemaine } from '../../models/affectation.model';
 import { BureauService } from '../../services/bureau.service';
+import { TooltipModule } from 'ngx-bootstrap/tooltip';
 @Component({
   selector: 'app-visualisation',
   templateUrl: './visualisation.component.html',
@@ -21,8 +22,6 @@ export class VisualisationComponent implements OnInit {
   bureaux: any[] = [];
   remainingPlaces: { bureau: string, placesRestantes: number, jour: string }[] = [];
 
-
-
   constructor(private authService: AuthService,private affectationService: AffectationService, private equipeService: EquipeService, private bureauService: BureauService) { }
 
   ngOnInit() {
@@ -30,13 +29,18 @@ export class VisualisationComponent implements OnInit {
       ([userName, equipeName, admin]) => {
         this.userName = userName;
         this.equipeName = equipeName;
-        this.admin=admin;}
+        this.admin=admin;
+        
+      }
     )
+
+    
     this.affectationService.getAffectations().subscribe(data => {
+
+      console.log("Données d'affectations reçues du backend :", data);
       this.affectationsSemaine = data;
       this.transformData(data);
       this.updateRemainingPlaces(); // Appel de la méthode pour mettre à jour les places restantes
-      // console.log(this.updateRemainingPlaces());
     });
   
 
@@ -49,8 +53,26 @@ export class VisualisationComponent implements OnInit {
       this.bureaux = data;
     });
   }
+
+
+    /**
+   * Transforme les données d'affectations pour chaque semaine en une structure facilement utilisable par l'application.
+   * Cette fonction traite les données brutes d'affectation, organisant les informations par équipe et par jour,
+   * et prépare une structure de données qui indique quel bureau (ou quels bureaux) chaque équipe occupe chaque jour de la semaine.
+   *
+   * Les données d'entrée doivent avoir une forme où chaque clé représente une date sous forme de chaîne ISO,
+   * et la valeur est un objet dont les clés sont les noms des équipes et les valeurs sont les bureaux (un seul bureau ou un tableau de bureaux)
+   * assignés à ces équipes pour la date correspondante.
+   *
+   * La fonction crée une nouvelle structure de données où chaque élément représente une équipe et ses affectations de bureau pour chaque jour.
+   * Pour les jours où une équipe est assignée à plusieurs bureaux, les noms de ces bureaux sont regroupés dans un tableau.
+   * Si une équipe n'a pas d'affectation pour un jour donné, la valeur est une chaîne vide.
+   *
+   * @param {AffectationsSemaine} data - Les données d'affectation brutes pour une semaine donnée.
+   */
   transformData(data: AffectationsSemaine) {
-    // Initialisation de jours avec les noms de jours de la semaine
+    console.log(this.affectationsSemaine);
+    // Initialisation des jours avec les noms des jours de la semaine
     this.jours = Object.keys(data).map(dateIso => this.getDayName(dateIso));
   
     // Initialise la structure transformée
@@ -65,7 +87,7 @@ export class VisualisationComponent implements OnInit {
     datesIso.forEach(dateIso => {
       const affectationsDuJour = data[dateIso];
       Object.keys(affectationsDuJour).forEach(equipe => {
-        teams.add(equipe);
+        teams.add(equipe); // Ajoute chaque équipe rencontrée à l'ensemble
       });
     });
   
@@ -74,11 +96,22 @@ export class VisualisationComponent implements OnInit {
       let affectationObj: any = { equipe: equipe };
       datesIso.forEach(dateIso => {
         const jourNom = this.getDayName(dateIso); // Convertit en nom de jour
-        affectationObj[jourNom] = data[dateIso][equipe] || '';
+        const bureauxDuJour = data[dateIso][equipe];
+        if (Array.isArray(bureauxDuJour)) {
+          affectationObj[jourNom] = Array.isArray(bureauxDuJour) ? bureauxDuJour : [bureauxDuJour || ''];
+
+        } else {
+          // Sinon, utilisez la valeur telle quelle (peut être une chaîne ou undefined)
+          affectationObj[jourNom] = bureauxDuJour || ''; // S'il n'y a pas d'affectation, on laisse une chaîne vide
+        }
       });
       this.transformedAffectations.push(affectationObj);
     });
+  
+    console.log(this.transformedAffectations);
   }
+  
+  
   // Définition de la méthode qui utilise calculPlacesRestantes
 
   getDayName(dateIsoString: string): string {
@@ -86,88 +119,68 @@ export class VisualisationComponent implements OnInit {
     return new Intl.DateTimeFormat('fr-FR', { weekday: 'long' }).format(date);
   }
 
-  // calculPlacesRestantes(affectations: any): { bureau: string, placesRestantes: number }[] {
-  //   const result: { bureau: string, placesRestantes: number }[] = [];
-  //   console.log(affectations);
-  
-  //   Object.keys(affectations).forEach(date => {
-  //     const equipesAffectations = affectations[date];
-  //     console.log(affectations);
-  
-  //     // Créez un objet pour stocker le nombre de personnes par bureau
-  //     const personnesParBureau: { [key: string]: number } = {};
-  
-  //     Object.keys(equipesAffectations).forEach(equipe => {
-  //       const bureau = equipesAffectations[equipe];
-  //       const equipeDetails = this.equipes.find(e => e.nom === equipe);
-  
-  //       // Vérifiez si l'équipe existe et si le bureau est occupé par l'équipe
-  //       if (equipeDetails && bureau) {
-  //         personnesParBureau[bureau] = (personnesParBureau[bureau] || 0) + equipeDetails.nombrePersonnes;
-  //       }
-  //     });
-  
-  //     // Itérez sur les bureaux et calculez les places restantes
-  //     Object.keys(personnesParBureau).forEach(bureau => {
-  //       console.log(personnesParBureau);
-  //       const capaciteBureau = this.getBureauCapacite(bureau);
-  //       const totalPlacesOccupees = personnesParBureau[bureau];
-        
-  //       if (capaciteBureau) {
-  //         const placesRestantes = capaciteBureau - totalPlacesOccupees;
-  //         result.push({
-  //           bureau: bureau,
-  //           placesRestantes: placesRestantes
-  //         });
-  //       }
-  //     });
-  //   });
-  
-  //   console.log(result);
-  //   return result;
-  // }
-
+    /**
+   * Calcule les places restantes dans chaque bureau pour chaque jour basé sur les affectations fournies.
+   * Prend en entrée un objet d'affectations où chaque clé est une date (sous forme de chaîne) et chaque valeur
+   * est un objet représentant les affectations des équipes pour cette date, avec des équipes comme clés et des bureaux (ou un tableau de bureaux) comme valeurs.
+   * Renvoie un tableau d'objets, chacun indiquant le bureau, le nombre de places restantes dans ce bureau, et le jour correspondant.
+   *
+   * @param {any} affectations - Un objet représentant les affectations d'équipe par jour.
+   * @returns {Array} Un tableau d'objets avec les clés 'bureau', 'placesRestantes', et 'jour', représentant respectivement
+   *                  le nom du bureau, le nombre de places restantes dans le bureau, et le nom du jour correspondant à l'affectation.
+   */
   calculPlacesRestantes(affectations: any): { bureau: string, placesRestantes: number, jour: string }[] {
     const result: { bureau: string, placesRestantes: number, jour: string }[] = [];
+    const capaciteParBureau: { [key: string]: number } = {}; // Pour stocker la capacité de chaque bureau
+    const occupationParBureauEtJour: { [key: string]: { [key: string]: number } } = {}; // Pour stocker l'occupation de chaque bureau par jour
+  
+    // Pré-calcul de la capacité de chaque bureau
+    this.bureaux.forEach(bureau => {
+      capaciteParBureau[bureau.nom] = bureau.capacite;
+      occupationParBureauEtJour[bureau.nom] = {};
+    });
   
     Object.keys(affectations).forEach(date => {
+      const jourNom = this.getDayName(date); // Assurez-vous que la conversion de date fonctionne correctement
       const equipesAffectations = affectations[date];
-      date= this.getDayName(date);
-      
-  
-      const personnesParBureau: { [key: string]: number } = {};
   
       Object.keys(equipesAffectations).forEach(equipe => {
-        const bureau = equipesAffectations[equipe];
         const equipeDetails = this.equipes.find(e => e.nom === equipe);
+        if (!equipeDetails) return;
   
-        if (equipeDetails && bureau) {
-          personnesParBureau[bureau] = (personnesParBureau[bureau] || 0) + equipeDetails.nombrePersonnes;
-        }
+        const bureaux = Array.isArray(equipesAffectations[equipe]) ? equipesAffectations[equipe] : [equipesAffectations[equipe]];
+        let nombrePersonnes = equipeDetails.nombrePersonnes;
+  
+        bureaux.forEach((bureau: string | number) => {
+          if (!bureau) return;
+          const capaciteBureau = capaciteParBureau[bureau];
+          if (capaciteBureau === undefined) return;
+  
+          if (!occupationParBureauEtJour[bureau][jourNom]) {
+            occupationParBureauEtJour[bureau][jourNom] = 0;
+          }
+  
+          const placesOccupables = Math.min(nombrePersonnes, capaciteBureau - occupationParBureauEtJour[bureau][jourNom]);
+          occupationParBureauEtJour[bureau][jourNom] += placesOccupables;
+          nombrePersonnes -= placesOccupables; // Réduire le nombre de personnes pour les bureaux suivants
+        });
       });
   
-      Object.keys(personnesParBureau).forEach(bureau => {
-        const capaciteBureau = this.getBureauCapacite(bureau);
-        const totalPlacesOccupees = personnesParBureau[bureau];
-  
-        if (capaciteBureau) {
-          const placesRestantes = capaciteBureau - totalPlacesOccupees;
-          result.push({
-            bureau: bureau,
-            placesRestantes: placesRestantes,
-            jour: date
-          });
-        }
+      // Après avoir calculé l'occupation totale pour chaque bureau, calculer les places restantes
+      Object.keys(occupationParBureauEtJour).forEach(bureau => {
+        const occupation = occupationParBureauEtJour[bureau][jourNom] || 0;
+        const placesRestantes = capaciteParBureau[bureau] - occupation;
+        result.push({
+          bureau: bureau,
+          placesRestantes: placesRestantes,
+          jour: jourNom
+        });
       });
     });
-    console.log(result);
   
     return result;
   }
   
-  
-
-
 
   updateRemainingPlaces() {
     if (this.affectationsSemaine) {
@@ -184,15 +197,18 @@ export class VisualisationComponent implements OnInit {
     return equipe ? equipe.nombrePersonnes : undefined;
   }
 
+  getPlacesRestantes(bureau: string, jour: string): number | undefined {
+    const placeRestante = this.remainingPlaces.find(place => place.bureau === bureau && place.jour === jour);
+    return placeRestante ? placeRestante.placesRestantes : undefined;
+  }
+  
+
     onAffecterBureauxClick() {
       this.affectationService.affecterBureaux().subscribe(result => {
         window.location.reload();
         console.log('Affectations réalisées avec succès', result);
-        // Mettez à jour votre UI en conséquence ou affichez un message
       }, error => {
         console.error('Erreur lors de l\'affectation des bureaux', error);
       });
-    }
-
-        
+    }       
 }

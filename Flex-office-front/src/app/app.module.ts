@@ -13,6 +13,7 @@ import { AffectationComponent } from './component/affectation/affectation.compon
 import { VisualisationComponent } from './component//visualisation/visualisation.component';
 import { BureauComponent } from './component/bureau/bureau.component';
 import { EquipeComponent } from './component/equipe/equipe.component';
+import { TooltipModule } from 'ngx-bootstrap/tooltip';
 
 @NgModule({
   declarations: [
@@ -34,6 +35,7 @@ import { EquipeComponent } from './component/equipe/equipe.component';
     FormsModule,
     CommonModule,
     ReactiveFormsModule,
+    TooltipModule.forRoot(),
 
   ],
   providers: [

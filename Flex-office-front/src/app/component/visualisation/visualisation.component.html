@@ -28,9 +28,6 @@
                 <li><a class="dropdown-item" routerLink="/visualisation">Gestion des Attributions</a></li>
                 </ul>
             </li> 
-            <!-- <li class="nav-item">
-              <a class="nav-link" routerLink="/register" style="color: black;">Register</a>
-            </li>-->
             <li class="nav-item">
               <a class="nav-link" routerLink="/login" style="color: black;">Déconnexion</a>
             </li>
@@ -57,42 +54,146 @@
                 <th>Vendredi</th>
               </tr>
             </thead>
+
             <tbody>
-              <!-- Affiche dynamiquement les affectations pour chaque équipe -->
+
+              
               <tr *ngFor="let affectation of transformedAffectations">
                 <td>{{ affectation.equipe }} ({{ getNombrePersonnes(affectation.equipe) }} personnes)</td>
-                <td data-toggle="tooltip" data-bs-custom-class="custom-tooltip" title="Détails supplémentaires ici" >{{affectation.lundi}}</td>
-                <td data-toggle="tooltip" data-bs-custom-class="custom-tooltip" title="Détails supplémentaires ici" >{{affectation.mardi}}</td>
-                <td data-toggle="tooltip" data-bs-custom-class="custom-tooltip" title="Détails supplémentaires ici" >{{affectation.mercredi}}</td>
-                <td data-toggle="tooltip" data-bs-custom-class="custom-tooltip" title="Détails supplémentaires ici" >{{affectation.jeudi}}</td>
-                <td data-toggle="tooltip" data-bs-custom-class="custom-tooltip" title="Détails supplémentaires ici" >{{affectation.vendredi}}</td>
+                <!-- Lundi -->
+                <td>
+                  <ng-container *ngIf="affectation.lundi && affectation.lundi.length">
+                    <ng-container *ngFor="let bureau of affectation.lundi; let i = index">
+                      <button *ngIf="i > 0; else firstBureauLundi" tooltip="Places disponibles: {{ getPlacesRestantes(bureau, 'lundi') }}">
+                        {{ bureau }}
+                      </button>
+                      <ng-template #firstBureauLundi>
+                        <button tooltip="Places disponibles: {{ getPlacesRestantes(bureau, 'lundi') }}">
+                          {{ bureau }}
+                        </button>
+                      </ng-template>
+                      <span *ngIf="i < affectation.lundi.length - 1">, </span>
+                    </ng-container>
+                  </ng-container>
+                </td>
 
-                <!-- Affiche dynamiquement les bureaux attribués pour chaque jour -->
-                <!-- <td *ngFor="let jour of jours">{{ affectation[jour] }}</td> -->
+                <!-- Mardi -->
+                <td>
+                  <ng-container *ngIf="affectation.mardi && affectation.mardi.length">
+                    <ng-container *ngFor="let bureau of affectation.mardi; let i = index">
+                      <button *ngIf="i > 0; else firstBureauMardi" tooltip="Places disponibles: {{ getPlacesRestantes(bureau, 'mardi') }}">
+                        {{ bureau }}
+                      </button>
+                      <ng-template #firstBureauMardi>
+                        <button tooltip="Places disponibles: {{ getPlacesRestantes(bureau, 'mardi') }}">
+                          {{ bureau }}
+                        </button>
+                      </ng-template>
+                      <span *ngIf="i < affectation.mardi.length - 1"> </span>
+                    </ng-container>
+                  </ng-container>
+                </td>
+                <!-- Mercredi -->
+                <td>
+                  <ng-container *ngIf="affectation.mercredi && affectation.mercredi.length">
+                    <ng-container *ngFor="let bureau of affectation.mercredi; let i = index">
+                      <button *ngIf="i > 0; else firstBureauMercredi" tooltip="Places disponibles: {{ getPlacesRestantes(bureau, 'mercredi') }}">
+                        {{ bureau }}
+                      </button>
+                      <ng-template #firstBureauMercredi>
+                        <button tooltip="Places disponibles: {{ getPlacesRestantes(bureau, 'mercredi') }}">
+                          {{ bureau }}
+                        </button>
+                      </ng-template>
+                      <span *ngIf="i < affectation.mercredi.length - 1"> </span>
+                    </ng-container>
+                  </ng-container>
+                </td>
+
+                <!-- Jeudi -->
+                <td>
+                  <ng-container *ngIf="affectation.jeudi && affectation.jeudi.length">
+                    <ng-container *ngFor="let bureau of affectation.jeudi; let i = index">
+                      <button *ngIf="i > 0; else firstBureauJeudi" tooltip="Places disponibles: {{ getPlacesRestantes(bureau, 'jeudi') }}">
+                        {{ bureau }}
+                      </button>
+                      <ng-template #firstBureauJeudi>
+                        <button tooltip="Places disponibles: {{ getPlacesRestantes(bureau, 'jeudi') }}">
+                          {{ bureau }}
+                        </button>
+                      </ng-template>
+                      <span *ngIf="i < affectation.jeudi.length - 1"> </span>
+                    </ng-container>
+                  </ng-container>
+                </td>
+
+                <!-- Vendredi -->
+                <td>
+                  <ng-container *ngIf="affectation.vendredi && affectation.vendredi.length">
+                    <ng-container *ngFor="let bureau of affectation.vendredi; let i = index">
+                      <button *ngIf="i > 0; else firstBureauVendredi" tooltip="Places disponibles: {{ getPlacesRestantes(bureau, 'vendredi') }}">
+                        {{ bureau }}
+                      </button>
+                      <ng-template #firstBureauVendredi>
+                        <button tooltip="Places disponibles: {{ getPlacesRestantes(bureau, 'vendredi') }}">
+                          {{ bureau }}
+                        </button>
+                      </ng-template>
+                      <span *ngIf="i < affectation.vendredi.length - 1"> </span>
+                    </ng-container>
+                  </ng-container>
+                </td>
               </tr>
+
+              <!-- <tr *ngFor="let affectation of transformedAffectations">
+                <td>{{ affectation.equipe }} ({{ getNombrePersonnes(affectation.equipe) }} personnes)</td>
+                <td>  <ng-container *ngIf="affectation.lundi">
+                  <button tooltip="Places disponibles: {{ getPlacesRestantes(affectation.lundi,'lundi') }}">
+                    {{ affectation.lundi }}
+                  </button>
+                </ng-container></td>
+                 <td>
+                  <ng-container *ngIf="affectation.mardi">
+                    <button tooltip="Places disponibles: {{ getPlacesRestantes(affectation.mardi,'mardi') }}">
+                      {{ affectation.mardi }}
+                    </button>
+                  </ng-container>
+                </td>
+                
+                <td>
+                  <ng-container *ngIf="affectation.mercredi">
+                    <button tooltip="Places disponibles: {{ getPlacesRestantes(affectation.mercredi,'mercredi') }}">
+                      {{ affectation.mercredi }}
+                    </button>
+                  </ng-container>
+                </td>
+                
+                <td>
+                  <ng-container *ngIf="affectation.jeudi">
+                    <button tooltip="Places disponibles: {{ getPlacesRestantes(affectation.jeudi,'jeudi') }}">
+                      {{ affectation.jeudi }}
+                    </button>
+                  </ng-container>
+                </td>
+                
+                <td>
+                  <ng-container *ngIf="affectation.vendredi">
+                    <button tooltip="Places disponibles: {{ getPlacesRestantes(affectation.vendredi,'vendredi') }}">
+                      {{ affectation.vendredi }}
+                    </button>
+                  </ng-container>
+                </td>
+                
+              </tr> -->
             </tbody>
           </table>
-          <!-- <div *ngFor="let equipe of equipes">
-            <p>{{ equipe.nom}}: {{equipe.nombrePersonnes}}</p>
-          </div>
-          <div *ngFor="let bureau of bureaux">
-            <p>{{ bureau.nom }}:{{bureau.capacite}}</p>
-            //Affichez d'autres détails du bureau si nécessaire -->
-          <!-- </div>
-            <h1>Place restantes</h1>
-            <div *ngIf="remainingPlaces && remainingPlaces.length">
-              <div *ngFor="let place of remainingPlaces">
-                <p>Bureau: {{ place.bureau }}</p>
-                <p>Places restantes: {{ place.placesRestantes }}</p>
-              </div>
-            </div> -->
               <button class="d-block mx-auto mb-3"(click)="onAffecterBureauxClick()" >Affecter les Bureaux</button>              
       </div>
     </div>
 
 
       <!-- Deuxième tableau pour les places restantes -->
-      <div class="card">
+      <!-- <div class="card">
         <h3 class="card-header" style="text-align: center;">
           Places restantes</h3>
         <table class="table">
@@ -112,7 +213,7 @@
           </tbody>
         </table>
         
-      </div>
+      </div> -->
   </div>
   </body>
 </html>

@@ -10,7 +10,7 @@
     <nav class="navbar navbar-expand navbar-light bg-white">
         <div class="container">
           <a class="navbar-brand" href="#">
-            <img src="https://mma.prnewswire.com/media/1861938/Sopra_Steria_Logo.jpg?p=facebook" alt="Logo de Sopra Steria" style="width: 150px; height: 80px;">
+            <img src="../../../assets/images/Sopra_Steria_Logo.jpg" alt="Logo de Sopra Steria" style="width: 150px; height: 80px;">
           </a>
           <ul class="navbar-nav ml-auto">
             <li class="nav-item">
@@ -58,7 +58,7 @@
                 Votre Semaine du {{ debutSemaine }} au {{ finSemaine }}
             </div>
             <div class="card-body">
-                <p>Voici l'attribution de vos bureaux pour cette semaine</p>
+                <p>Voici vos bureaux pour cette semaine</p>
                 <table>
                     <thead>
                         <tr>
@@ -68,7 +68,7 @@
                     </thead>
                     <tbody>
                         <tr *ngFor="let affectation of affectationsSemaine | keyvalue">
-                            <td>{{ getDayName(affectation.key) }} {{ affectation.key }}</td> <!-- Utilisez getDayName pour convertir la date en nom de jour -->
+                            <td>{{ getDayName(affectation.key) }} </td> <!-- Utilisez getDayName pour convertir la date en nom de jour -->
                             <td>{{ affectation.value }}</td>
                         </tr>
                     </tbody>

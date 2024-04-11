@@ -28,13 +28,14 @@ public class AffectationController {
     private AffectationService affectationService;
     
     @GetMapping
-    public ResponseEntity<Map<LocalDate, Map<String, String>>> getAffectations() {
-        Map<LocalDate, Map<String, String>> affectations = affectationService.recupererAffectationsExistantes();
+    public ResponseEntity<Map<LocalDate, Map<String, List<String>>>> getAffectations() {
+        Map<LocalDate, Map<String, List<String>>> affectations = affectationService.recupererAffectationsExistantes();
         return ResponseEntity.ok(affectations);
     }
+    
 
     @GetMapping("/affectations/{nomEquipe}")
-    public Map<LocalDate, String> getAffectationsParEquipe(@PathVariable String nomEquipe) {
+    public Map<LocalDate, List<String>> getAffectationsParEquipe(@PathVariable String nomEquipe) {
         return affectationService.getAffectationsParEquipe(nomEquipe);
     }
 
