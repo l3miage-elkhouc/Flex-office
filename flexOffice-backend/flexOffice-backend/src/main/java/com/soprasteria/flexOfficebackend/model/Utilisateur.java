@@ -3,7 +3,7 @@ package com.soprasteria.flexOfficebackend.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
-/* Représente une entité utilisateur dans un système de gestion de bureau flexible. Elle utilise les annotations JPA pour la persistance des données. */
+/* Représente une entité utilisateur, elle utilise les annotations JPA pour la persistance des données. */
 @Entity
 @Table(name="utilisateur")
 public class Utilisateur {
