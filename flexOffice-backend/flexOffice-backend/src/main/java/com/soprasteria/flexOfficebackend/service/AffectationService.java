@@ -40,7 +40,7 @@ public class AffectationService {
         this.affectationRepository = affectationRepository;
     }
 
-    // Ajouter une nouvelle affectation
+    // Pour l'ajout d'une nouvelle affectation
     public Affectation ajouterAffectation(Affectation affectation) {
         return affectationRepository.save(affectation);
     }
@@ -57,22 +57,22 @@ public class AffectationService {
         return affectationRepository.findById(id);
     }
 
-    // Mettre à jour une affectation (supposant que l'ID est inclus dans l'objet Affectation)
+    // Mettre à jour une affectation existante dans la base de données 
     public Affectation mettreAJourAffectation(Affectation affectation) {
-        return affectationRepository.save(affectation); // save fonctionne pour à la fois créer et mettre à jour
+        return affectationRepository.save(affectation); 
     }
 
     // Supprimer une affectation par son ID
     public void supprimerAffectation(Long id) {
         affectationRepository.deleteById(id);
     }
-
+    //Récupère toutes les affectations de la base de données et les organise par date, puis par équipe, et enfin par bureau.
     public Map<LocalDate, Map<String, List<String>>> recupererAffectationsExistantes() {
         // Convertir Iterable en List
         List<Affectation> affectations = StreamSupport.stream(affectationRepository.findAll().spliterator(), false)
                                                         .collect(Collectors.toList());
     
-        // On ajuste ici pour créer une Map<LocalDate, Map<String, List<String>>>
+       
         Map<LocalDate, Map<String, List<String>>> resultat = affectations.stream()
             .collect(Collectors.groupingBy(Affectation::getDate,
                     Collectors.groupingBy(affectation -> affectation.getEquipe().getNom(),
@@ -94,7 +94,7 @@ public class AffectationService {
                 Collectors.toMap(
                     affectation -> affectation.getBureau().getNom(),
                     Affectation::getPlacesRestantes,
-                    Integer::sum // Si plusieurs affectations pour le même bureau le même jour, additionnez les places restantes
+                    Integer::sum // Si plusieurs affectations pour le même bureau le même jour, on additionne les places restantes
                 )
             ));
     
@@ -241,11 +241,10 @@ public Map<LocalDate, List<String>> getAffectationsParEquipe(String nomEquipe) {
             // pour optimiser l'utilisation de l'espace.
             return Collections.min(bureauxCandidates, Comparator.comparingInt(bureau -> capacitesRestantes.get(bureau) - membresRestants));
         } else {
-            // Si aucun bureau ne peut accueillir tous les membres restants, choisissez le bureau avec la plus grande capacité restante.
-            // Cela peut être nécessaire si vous décidez de permettre l'attribution de plusieurs bureaux à une équipe.
+          
             return bureauxDisponibles.stream()
                     .max(Comparator.comparingInt(capacitesRestantes::get))
-                    .orElse(null); // Retourne null si tous les bureaux sont pleins ou si la liste est vide.
+                    .orElse(null); // Retourne null si tous les bureaux sont pleins.
         }
     }
 
