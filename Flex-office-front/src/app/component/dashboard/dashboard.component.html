@@ -27,6 +27,7 @@
                 <li><a class="dropdown-item" routerLink="/visualisation">Gestion des Attributions</a></li>
                 </ul>
             </li>
+             <!-- Lien de déconnexion -->
             <li class="nav-item">
               <a class="nav-link" routerLink="/index" style="color: black;">Déconnexion</a>
             </li>
@@ -49,7 +50,6 @@
             <div class="card-body">
 
                 <p> Vous êtes dans l'équipe <strong>{{ equipeName }} </strong> </p>
-                <!-- Insérer ici la liste des membres de l'équipe -->
             </div>
         </div>
         <!-- Section de la présence hebdomadaire -->
@@ -59,6 +59,7 @@
             </div>
             <div class="card-body">
                 <p>Voici vos bureaux pour cette semaine</p>
+                <!-- Tableau affichant les affectations de la semaine -->
                 <table>
                     <thead>
                         <tr>
@@ -67,8 +68,9 @@
                         </tr>
                     </thead>
                     <tbody>
+                        <!-- Afficher chaque affectation -->
                         <tr *ngFor="let affectation of affectationsSemaine | keyvalue">
-                            <td>{{ getDayName(affectation.key) }} </td> <!-- Utilisez getDayName pour convertir la date en nom de jour -->
+                            <td>{{ getDayName(affectation.key) }} </td> 
                             <td>{{ affectation.value }}</td>
                         </tr>
                     </tbody>
