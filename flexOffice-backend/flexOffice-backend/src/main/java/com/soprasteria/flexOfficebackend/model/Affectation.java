@@ -23,7 +23,7 @@ public class Affectation {
     private Bureau bureau;
 
     @Column(name = "placesRestantes")
-    private int placesRestantes; // Nouveau champ ajouté
+    private int placesRestantes; 
 
 
     // Constructeur par défaut
@@ -38,7 +38,7 @@ public class Affectation {
         this.placesRestantes = placesRestantes;
     }
 
-    // Getters et Setters
+    /* Getters et Setters*∕
     public Long getId() {
         return id;
     }
