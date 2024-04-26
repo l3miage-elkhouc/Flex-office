@@ -16,7 +16,6 @@
     dataLoaded: boolean = false;
     admin!: boolean;
     bureaux: any[] = [];
-    // Pour la sélection et la mise à jour des bureaux
     selectedBureauId!: number;
     selectedBureauNom: string = '';
     selectedBureauCapacite: number = 0;
@@ -25,6 +24,7 @@
     constructor(private bureauService: BureauService, private authService: AuthService) { }
 
     ngOnInit() {
+      // Récupération des données utilisateur via le service d'authentification
       this.authService.getUserData().subscribe(([userName, equipeName, admin]) => {
         this.userName = userName;
         this.equipeName = equipeName;
@@ -33,6 +33,7 @@
       this.loadBureaux();
     }
 
+    // Méthode pour ajouter un bureau
     ajouterBureau() {
       this.bureauService.ajouterBureau({ nom: this.nom, capacite: this.capacite }).subscribe({
         next: (data: any) => {
@@ -44,6 +45,7 @@
       });
     }
 
+    // Méthode pour charger la liste des bureaux
     loadBureaux() {
       this.bureauService.getBureaux().subscribe({
         next: (data) => {
@@ -54,6 +56,7 @@
       });
     }
 
+    // Méthode pour supprimer un bureau
     supprimerBureau(id: number) {
       console.log(id);
       if (confirm('Êtes-vous sûr de vouloir supprimer ce bureau ?')) {
@@ -68,7 +71,8 @@
         });
       }
     }
-    
+
+    // Méthode pour charger les informations actuelles d'un bureau sélectionné
     loadCurrentBureauInfo() {
 
       const selectedBureau = this.bureaux.find(bureau => Number(bureau.id) === Number(this.selectedBureauId));
@@ -83,6 +87,7 @@
     }
     
 
+    // Méthode pour mettre à jour les informations d'un bureau
     updateBureau() {
       console.log("ici");
       console.log(this.selectedBureauId);
