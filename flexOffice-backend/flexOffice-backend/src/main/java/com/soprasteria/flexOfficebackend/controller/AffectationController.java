@@ -33,6 +33,12 @@ public class AffectationController {
         return ResponseEntity.ok(affectations);
     }
     
+    // Endpoint pour récupérer les affectations hebdomadaires avec capacités restantes
+    @GetMapping("/placesDisponibles")
+    public ResponseEntity<Map<LocalDate, Map<String, Integer>>> getPlacesDisponibles() {
+        Map<LocalDate, Map<String, Integer>> places=affectationService.recupererPlacesRestantesParBureau();
+        return ResponseEntity.ok(places);
+    }
 
     @GetMapping("/affectations/{nomEquipe}")
     public Map<LocalDate, List<String>> getAffectationsParEquipe(@PathVariable String nomEquipe) {
@@ -41,7 +47,7 @@ public class AffectationController {
 
     @PostMapping("/affecterBureaux")
     public ResponseEntity<?> affecterBureaux() {
-        Map<LocalDate, Map<String, List<String>>> affectations = affectationService.planifierAffectationHebdomadaire();
+        Map<LocalDate, Map<String, Object>> affectations = affectationService.planifierAffectationHebdomadaire();
         // Logique pour sauvegarder ou traiter les affectations...
         return ResponseEntity.ok(affectations);
     }

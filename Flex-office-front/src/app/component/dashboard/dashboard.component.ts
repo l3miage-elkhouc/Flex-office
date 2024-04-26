@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthService } from '../../auth.service';
+import { AuthService } from '../../services/auth.service';
 import { AffectationService } from '../../services/affectation.service';
 import { AffectationsSemaine } from '../../models/affectation.model';
 
@@ -35,17 +35,6 @@ export class DashboardComponent implements OnInit {
       }
     );
   }
-  
-  // calculerIntervalleSemaine(affectations: AffectationsSemaine): void {
-  //   const jours = Object.keys(affectations); // Extrait les clés qui sont des strings représentant des dates
-  //   if (jours.length > 0) {
-  //     const dates = jours.map(jour => new Date(jour));
-  //     dates.sort((a, b) => a.getTime() - b.getTime()); // Trie les dates
-  //     const options: Intl.DateTimeFormatOptions = { year: 'numeric', month: 'long', day: 'numeric' };
-  //     this.debutSemaine = dates[0].toLocaleDateString('fr-FR', options); // Première date
-  //     this.finSemaine = dates[dates.length - 1].toLocaleDateString('fr-FR', options); // Dernière date
-  //   }
-  // }
   calculerIntervalleSemaine(affectations: AffectationsSemaine): void {
     const jours = Object.keys(affectations); // Extrait les clés qui sont des strings représentant des dates
     if (jours.length > 0) {
@@ -73,34 +62,3 @@ export class DashboardComponent implements OnInit {
     return new Intl.DateTimeFormat('fr-FR', { weekday: 'long' }).format(date);
   }
 }
-
-
-
-// import { Component, OnInit } from '@angular/core';
-// import { AuthService } from '../../auth.service';
-
-// @Component({
-//   selector: 'app-dashboard',
-//   templateUrl: './dashboard.component.html',
-//   styleUrls: ['./dashboard.component.css']
-// })
-// export class DashboardComponent implements OnInit {
-//   userName: string = '';
-//   equipeName: string = '';
-
-//   constructor(private authService: AuthService) { }
-
-//   ngOnInit(): void {
-//     this.authService.getLoggedInUser().subscribe(
-//       (userName: string) => {
-//         this.userName = userName;
-//         // Une fois que le nom d'utilisateur est récupéré, on récupère le nom de l'équipe
-//         this.authService.getEquipeName().subscribe(
-//           (equipeName: string) => {
-//             this.equipeName = equipeName;
-//           }
-//         );
-//       }
-//     );
-//   }
-// }

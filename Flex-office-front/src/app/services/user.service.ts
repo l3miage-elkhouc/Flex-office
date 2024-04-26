@@ -29,12 +29,6 @@ export class UserService {
     return this.httpClient.post<any>(`${this.API_URL}/register`, { email, password });
   }
 
-  login(user: any) {
-    return this.httpClient.post(this.API_URL + this.ENDPOINT_LOGIN, user).pipe(
-      catchError(this.handleError)
-    );
-  }
-
   private handleError(error: HttpErrorResponse) {
     console.error('Une erreur s\'est produite:', error);
     return throwError('Une erreur s\'est produite, veuillez réessayer plus tard.');

@@ -1,0 +1,128 @@
+/* Reset des styles par défaut */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Styles généraux */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f9f9f9;
+    color: #333;
+    display: grid; /* Utilisation de CSS Grid */
+    grid-template-rows: auto 1fr auto; /* 3 lignes : en-tête, contenu, pied de page */
+    min-height: 100vh; /* Hauteur minimale de la page */
+    background-image: url('/assets/images/a.jpg'); /* Image de fond */
+    background-size: cover; /* Redimensionner l'image pour couvrir toute la page */
+    background-position: center; /* Centrer l'image */
+}
+
+.container {
+    width: 80%;
+    margin: 0 auto;
+}
+
+/* Styles du header */
+header {
+    background-color: rgba(0, 0, 0, 0.5); /* Fond semi-transparent */
+    color: #fff;
+    padding: 1rem 0;
+    grid-row: 1; /* Header sur la première ligne de la grille */
+}
+
+header h1 {
+    margin: 0;
+}
+
+header .container {
+    display: flex; /* Utilisez flexbox pour aligner les éléments horizontalement */
+    align-items: center; /* Centrez verticalement les éléments */
+}
+
+header nav {
+    margin-left: auto; /* Pour aligner les boutons à droite */
+}
+
+header nav a {
+    color: #fff;
+    text-decoration: none;
+    margin-left: 1.5rem;
+    transition: color 0.3s ease;
+   
+}
+
+
+
+/* Styles de la section hero */
+.hero {
+    position: relative; /* Position relative pour positionner le pseudo-élément */
+    text-align: center;
+    grid-row: 4; /* Hero sur la deuxième ligne de la grille */
+    /* Ne pas mettre d'image de fond ici */
+}
+
+/* Pseudo-élément pour superposer une couleur semi-transparente */
+.hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Couleur semi-transparente */
+}
+
+.hero-content {
+    position: relative; /* Position relative pour empiler le texte au-dessus de l'image */
+    z-index: 1; /* S'assurer que le texte est au-dessus de l'image */
+    padding: 4rem 0;
+}
+
+.hero h1 {
+    font-size: 2.5rem;
+    color: #fff; /* Couleur du texte */
+}
+
+/* Styles du footer */
+footer {
+    background-color: rgba(0, 0, 0, 0.5); /* Fond semi-transparent */
+    color: #fff;
+    padding: 2rem 0;
+    text-align: center;
+    grid-row: 3; /* Footer sur la troisième ligne de la grille */
+}
+
+footer a {
+    color: #ffd700;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+footer a:hover {
+    color: #fff;
+}
+
+/* Styles pour les boutons */
+.btn-purple {
+    background-color: #e1aae5;
+    color: #fff;
+    padding: 10px 5px;
+ 
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+    border-radius: 20px
+}
+
+.btn-purple:hover {
+    background-color: #9932cc;
+}
+
+.cc {
+    text-align: center;
+    justify-content: center;
+    padding: 15%;
+    color: #ffffff;
+    font-size: 30px;
+    font-weight: bold;
+}

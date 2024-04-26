@@ -2,6 +2,8 @@
   import { Injectable } from '@angular/core';
   import { HttpClient } from '@angular/common/http';
   import { Observable } from 'rxjs';
+  import { Bureau } from '../models/bureau';
+
 
   @Injectable({
     providedIn: 'root'
@@ -13,6 +15,10 @@
     //Récupérer les bureaux
     getEquipes(): Observable<any> {
       return this.http.get(`${this.apiUrl}/equipes`);
+    }
+  
+    getBureaux(): Observable<Bureau[]> {
+      return this.http.get<Bureau[]>(`${this.apiUrl}/bureaux`);
     }
 
     //Récupérer la liste des utilisateurs

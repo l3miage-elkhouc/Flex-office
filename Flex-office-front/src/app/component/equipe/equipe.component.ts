@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthService } from '../../auth.service';
+import { AuthService } from '../../services/auth.service';
 import { EquipeService } from '../../services/equipe.service';
-import { Utilisateur } from '../../models/utilisateur.model'; // Ajustez le chemin selon votre structure de fichiers
+import { Utilisateur } from '../../models/utilisateur.model';
 
 @Component({
   selector: 'app-equipe',
@@ -18,7 +18,7 @@ export class EquipeComponent implements OnInit {
   transformedAffectations: any[] = [];
   equipes: any[] = [];
   utilisateurs: any[] = [];
-  // Pour la sélection et la mise à jour
+  // Pour la sélection et la mise à jour des equipes
   selectedEquipeId!: number;
   selectedEquipeNom: string = '';
   selectedEquipeCapacite: number = 0;
@@ -51,7 +51,7 @@ export class EquipeComponent implements OnInit {
 
   ajouterEquipe() {
     console.log("Ajout d'équipe avec nom:", this.nom, "et nombrePersonnes:", this.nombrePersonnes);
-    const equipe = { nom: this.nom, nombrePersonnes: this.nombrePersonnes }; // Utiliser le même nom de champ que dans le modèle
+    const equipe = { nom: this.nom, nombrePersonnes: this.nombrePersonnes }; 
     this.equipeService.ajouterEquipe(equipe).subscribe({
         next: (data: any) => {
         console.log("Réponse du serveur:", data);
@@ -75,7 +75,6 @@ export class EquipeComponent implements OnInit {
     loadUtilisateurs() {
     this.equipeService.getUtilisateurs().subscribe({
       next: (utilisateurs: any[]) => {
-        // Excluez l'utilisateur connecté de la liste
         this.utilisateurs = utilisateurs.filter(utilisateur => utilisateur.nom !== this.userName);
         this.dataLoaded = true;
       },
@@ -85,7 +84,7 @@ export class EquipeComponent implements OnInit {
 
   
   loadCurrentEquipeInfo() {
-    this.selectedEquipe = this.equipes.find(equipe => equipe.id === +this.selectedEquipeId) || null;    // Assurez-vous que cette ligne logique imprime bien l'équipe sélectionnée
+    this.selectedEquipe = this.equipes.find(equipe => equipe.id === +this.selectedEquipeId) || null;
     
     if (this.selectedEquipe) {
       // Préremplir le nombre de personnes
@@ -126,7 +125,7 @@ export class EquipeComponent implements OnInit {
         this.equipeService.updateAdminStatus(this.selectedUser.id, this.selectedUserIsAdmin).subscribe({
             next: () => {
                 console.log('Statut d\'administrateur mis à jour');
-                // Vous pouvez rafraîchir la liste des utilisateurs ici si nécessaire
+                //  rafraîchir la liste des utilisateurs
                 this.loadUtilisateurs();
             },
             error: error => console.error('Erreur lors de la mise à jour du statut d\'administrateur', error)
@@ -142,8 +141,8 @@ updateEquipe() {
         next: () => {
           console.log('Nombre de personnes mis à jour avec succès.');
           this.loadEquipes(); // Recharger les informations des équipes après la mise à jour
-          // Réinitialiser le formulaire ou la propriété si nécessaire
-          this.nombrePersonnes = 0; // Optionnel
+          // Réinitialiser le formulaire 
+          this.nombrePersonnes = 0; 
         },
         error: (error) => console.error('Erreur lors de la mise à jour de l\'équipe', error)
       });
@@ -162,7 +161,7 @@ loadCurrentEquipeDays() {
         this.joursSelectionnes.fill(false);
         // Cocher les jours récupérés
         equipe.joursDePresence.forEach((jourId: number) => {
-          this.joursSelectionnes[jourId - 1] = true; // Assumant que jourId commence à 1
+          this.joursSelectionnes[jourId - 1] = true;
         });
       },
       error: (err) => console.error('Erreur lors du chargement des jours de présence:', err)
@@ -170,16 +169,16 @@ loadCurrentEquipeDays() {
   }
 }
 
+/**
+ *  mettre à jour les jours de présence d'une équipe en fonction des jours sélectionnés par l'utilisateur. 
+ */
 
 updateEquipeDays() {
-  // Transformez joursSelectionnes en une structure appropriée pour l'envoyer au backend
-  // par exemple, un tableau d'identifiants de jours
   const joursDePresence = this.jours
     .filter((_, i) => this.joursSelectionnes[i])
-    .map(jour => this.jours.indexOf(jour) + 1); // Transformez selon la logique de votre backend
+    .map(jour => this.jours.indexOf(jour) + 1);
     console.log(joursDePresence);
 
-  // Faites l'appel API pour mettre à jour les jours de présence de l'équipe
   this.equipeService.updateEquipeDays(this.selectedEquipeId, joursDePresence)
     .subscribe({
       next: () => console.log('Jours de présence mis à jour'),
@@ -188,7 +187,6 @@ updateEquipeDays() {
 }
 
   
-// equipe.component.ts
 confirmDeletion() {
   if (this.selectedEquipeId) {
     if (confirm("Êtes-vous sûr de vouloir supprimer cette équipe ?")) {

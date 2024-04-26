@@ -44,7 +44,7 @@ public class AuthController {
     //     }
     // }
     @PostMapping("/login")
-public ResponseEntity<Object> login(@RequestBody Utilisateur user) {
+    public ResponseEntity<Object> login(@RequestBody Utilisateur user) {
     String email = user.getEmail();
     String password = user.getPassword();
 

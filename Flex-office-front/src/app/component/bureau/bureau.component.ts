@@ -1,5 +1,5 @@
   import { Component, OnInit } from '@angular/core';
-  import { AuthService } from '../../auth.service';
+  import { AuthService } from '../../services/auth.service';
   import { BureauService } from '../../services/bureau.service';
 
   @Component({
@@ -16,7 +16,7 @@
     dataLoaded: boolean = false;
     admin!: boolean;
     bureaux: any[] = [];
-    // Pour la sélection et la mise à jour
+    // Pour la sélection et la mise à jour des bureaux
     selectedBureauId!: number;
     selectedBureauNom: string = '';
     selectedBureauCapacite: number = 0;
@@ -38,7 +38,7 @@
         next: (data: any) => {
           console.log(data);
           this.showSuccessModal = true;
-          this.loadBureaux(); // Recharge les bureaux après en avoir ajouté un nouveau
+          this.loadBureaux(); // Recharger les bureaux après en avoir ajouté un nouveau
         },
         error: (error: any) => console.error(error)
       });
@@ -60,7 +60,7 @@
         this.bureauService.supprimerBureau(id).subscribe({
           next: () => {
             console.log('Bureau supprimé avec succès');
-            this.loadBureaux(); // Rechargez la liste des bureaux après la suppression
+            this.loadBureaux(); // Recharger la liste des bureaux après la suppression
           },
           error: (error) => {
             console.error('Erreur lors de la suppression du bureau', error);

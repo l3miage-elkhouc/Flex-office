@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
-import { UserService } from './user.service';
+import { UserService } from './services/user.service';
 import { OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+
 
 
 @Component({
@@ -14,12 +16,17 @@ export class AppComponent implements OnInit {
   utilisateurs: any[] = [];
 
 
-  constructor(private userService : UserService){
+  constructor(private userService : UserService , private router: Router){
 
   }
   ngOnInit(): void {
     console.log('OnInit ...');
     this.userService.getUsers().subscribe((data) => {
       this.utilisateurs = Object.values(data);    });
+  }
+
+  redirectLogin(){
+
+    this.router.navigate(['/login']);
   }
 }

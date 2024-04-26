@@ -9,11 +9,11 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DashboardComponent } from './component/dashboard/dashboard.component';
 import { CommonModule } from '@angular/common';
 import { LoginComponent } from './component/login/login.component';
-import { AffectationComponent } from './component/affectation/affectation.component';
 import { VisualisationComponent } from './component//visualisation/visualisation.component';
 import { BureauComponent } from './component/bureau/bureau.component';
 import { EquipeComponent } from './component/equipe/equipe.component';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
+import { IndexComponent } from './component/index/index.component';
 
 @NgModule({
   declarations: [
@@ -21,10 +21,10 @@ import { TooltipModule } from 'ngx-bootstrap/tooltip';
     RegisterComponent,
     DashboardComponent,
     LoginComponent,
-    AffectationComponent,
     VisualisationComponent,
     BureauComponent,
     EquipeComponent,
+    IndexComponent,
   ],
   imports: [
     BrowserModule,

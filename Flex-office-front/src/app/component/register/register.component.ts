@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { UserService } from '../../user.service';
+import { UserService } from '../../services/user.service';
+import { Router } from '@angular/router';
+
 
 @Component({
   selector: 'app-register',
@@ -13,7 +15,8 @@ export class RegisterComponent {
   registrationError = false;
   registrationErrorMessage!: string;
 
-  constructor(private formBuilder: FormBuilder, private userService: UserService) {
+
+  constructor(private formBuilder: FormBuilder, private userService: UserService, private router: Router) {
     this.registerForm = this.formBuilder.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', Validators.required]
@@ -35,11 +38,13 @@ export class RegisterComponent {
         if (exists) {
           this.userService.updatePassword(email, password).subscribe(
             () => {
-              // Mot de passe mis à jour avec succès
+
             },
-            error => {
-              this.registrationError = true;
+            success => {
+              this.registrationError = false;
               this.registrationErrorMessage = 'Vous êtes bien enregistré !!';
+               this.router.navigate(['/dashboard']); // Naviguer vers la page d'accueil
+
             }
           );
         } else {

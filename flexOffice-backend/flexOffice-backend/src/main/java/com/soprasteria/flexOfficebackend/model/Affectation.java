@@ -22,6 +22,10 @@ public class Affectation {
     @JoinColumn(name = "idBureau", referencedColumnName = "id")
     private Bureau bureau;
 
+    @Column(name = "placesRestantes")
+    private int placesRestantes; // Nouveau champ ajouté
+
+
     // Constructeur par défaut
     public Affectation() {
     }
@@ -31,6 +35,7 @@ public class Affectation {
         this.date = date;
         this.equipe = equipe;
         this.bureau = bureau;
+        this.placesRestantes = placesRestantes;
     }
 
     // Getters et Setters
@@ -64,5 +69,13 @@ public class Affectation {
 
     public void setBureau(Bureau bureau) {
         this.bureau = bureau;
+    }
+
+    public int getPlacesRestantes() {
+        return placesRestantes;
+    }
+
+    public void setPlacesRestantes(int placesRestantes) {
+        this.placesRestantes = placesRestantes;
     }
 }
