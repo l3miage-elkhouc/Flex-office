@@ -6,7 +6,7 @@
         import com.fasterxml.jackson.annotation.JsonIgnore;
 
         import jakarta.persistence.*;
-
+       /* Représente une entité d'équipe dans un système de gestion de bureau flexible. Elle utilise les annotations JPA pour la persistance des données.*/
         @Entity
         @Table(name="equipe")
         public class Equipe {
@@ -40,7 +40,7 @@
             private List<Bureau> bureaux;
             
 
-            // Constructeurs, getters et setters
+            // Constructeurs
             public Equipe() {
                 this.taux_presence = BigDecimal.valueOf(60);
             }
@@ -56,7 +56,7 @@
             @CollectionTable(name = "jours_de_presence", joinColumns = @JoinColumn(name = "equipe_id"))
             @Column(name = "jour")
             private List<Integer> joursDePresence;
-        
+            //Les getters et setters
             public int getId() {
                 return id;
             }
