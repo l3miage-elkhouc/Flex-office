@@ -2,7 +2,7 @@ package com.soprasteria.flexOfficebackend.model;
 import java.time.LocalDate;
 import jakarta.persistence.*;
 
-/* Modélise les affectations dans un système de gestion de bureau flexible. Elle utilise les annotations JPA pour la persistance des données. */
+/* Modélise les affectations, elle utilise les annotations JPA pour la persistance des données. */
 @Entity
 public class Affectation {
 
