@@ -12,7 +12,7 @@ body {
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 .card-header {
-    background-color: #cd8fc1; /* violet */
+    background-color: #cd8fc1; 
     color: #fff;
     border-radius: 10px 10px 0 0;
     padding: 10px 20px;
@@ -25,12 +25,12 @@ body {
     margin-top: 20px;
 }
 .btn-primary {
-    background-color: #c57e85; /* rouge */
+    background-color: #c57e85;
     border-color: #000000;
 }
 .btn-primary:hover {
-    background-color: #cd8fc1; /* rouge plus foncé */
-    border-color: #bd2130; /* rouge plus foncé */
+    background-color: #cd8fc1; 
+    border-color: #bd2130; 
 }
 table {
     width: 100%;
@@ -43,10 +43,10 @@ th, td {
     text-align: left;
 }
 th {
-    background-color: #faf6f6; /* violet */
+    background-color: #faf6f6;
     color: rgb(11, 11, 11);
 }
 td {
-    background-color: #ededed; /* rouge */
+    background-color: #ededed; 
     color: rgb(10, 10, 10);
 }
