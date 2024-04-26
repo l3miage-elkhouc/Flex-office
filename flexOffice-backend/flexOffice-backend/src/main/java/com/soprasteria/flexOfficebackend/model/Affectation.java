@@ -38,7 +38,7 @@ public class Affectation {
         this.placesRestantes = placesRestantes;
     }
 
-    /* Getters et Setters*∕
+    // Getters et Setters
     public Long getId() {
         return id;
     }
