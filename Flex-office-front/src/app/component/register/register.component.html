@@ -1,12 +1,14 @@
 <div class="container">
   <div class="register-container">
     <h2 class="register-title">Inscription</h2>
+    <!-- Formulaire d'inscription -->
     <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
       <div class="form-group">
         <label for="email" class="form-label">Email :</label>
         <input type="email" class="form-control" formControlName="email" placeholder="Entrez votre email">
         <div *ngIf="submitted && registerForm.controls['email'].errors" class="error-message">
           <div *ngIf="registerForm.controls['email'].errors['required']">Email requis</div>
+          <!-- Affiche un message d'erreur si l'e-mail est invalide (non conforme au format d'e-mail) -->
           <div *ngIf="registerForm.controls['email'].errors['email']">Email invalide</div>
         </div>
       </div>
@@ -17,32 +19,11 @@
           <div *ngIf="registerForm.controls['password'].errors['required']">Mot de passe requis</div>
         </div>
       </div>
+      <!-- Bouton de soumission du formulaire d'inscription -->
       <button type="submit" class="btn btn-primary btn-block">S'inscrire</button>
     </form>
+      <!-- Affiche un message d'erreur en cas d'échec d'inscription -->
     <div *ngIf="registrationError" class="error-message mt-3">{{ registrationErrorMessage }}</div>
   </div>
 </div>
 
-
-<!-- <div class="container">
-  <h2>Inscription</h2>
-  <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
-    <div class="form-group">
-      <label for="email">Email :</label>
-      <input type="email" class="form-control" formControlName="email">
-      <div *ngIf="submitted && registerForm.controls['email'].errors" class="text-danger">
-        <div *ngIf="registerForm.controls['email'].errors['required']">Email requis</div>
-        <div *ngIf="registerForm.controls['email'].errors['email']">Email invalide</div>
-      </div>
-    </div>
-    <div class="form-group">
-      <label for="password">Mot de passe :</label>
-      <input type="password" class="form-control" formControlName="password">
-      <div *ngIf="submitted && registerForm.controls['password'].errors" class="text-danger">
-        <div *ngIf="registerForm.controls['password'].errors['required']">Mot de passe requis</div>
-      </div>
-    </div>
-    <button type="submit" class="btn btn-primary">S'inscrire</button>
-  </form>
-  <div *ngIf="registrationError" class="text-danger mt-3">{{ registrationErrorMessage }}</div>
-</div> -->
