@@ -18,7 +18,6 @@ export class EquipeComponent implements OnInit {
   transformedAffectations: any[] = [];
   equipes: any[] = [];
   utilisateurs: any[] = [];
-  // Pour la sélection et la mise à jour des equipes
   selectedEquipeId!: number;
   selectedEquipeNom: string = '';
   selectedEquipeCapacite: number = 0;
@@ -48,7 +47,7 @@ export class EquipeComponent implements OnInit {
   
   }
 
-
+ // Méthode pour ajouter une équipe
   ajouterEquipe() {
     console.log("Ajout d'équipe avec nom:", this.nom, "et nombrePersonnes:", this.nombrePersonnes);
     const equipe = { nom: this.nom, nombrePersonnes: this.nombrePersonnes }; 
@@ -62,6 +61,7 @@ export class EquipeComponent implements OnInit {
     });
   }
   
+  // Méthode pour charger la liste des équipes
   loadEquipes() {
     this.equipeService.getEquipes().subscribe({
       next: (data: any[]) => {
@@ -71,7 +71,8 @@ export class EquipeComponent implements OnInit {
       error: (err) => console.error('Erreur lors du chargement des équipes:', err)
     });
   }
-
+  
+  // Méthode pour charger la liste des utilisateurs
     loadUtilisateurs() {
     this.equipeService.getUtilisateurs().subscribe({
       next: (utilisateurs: any[]) => {
@@ -82,7 +83,7 @@ export class EquipeComponent implements OnInit {
     });
   }
 
-  
+  // Méthode pour charger les détails de l'équipe actuellement sélectionnée
   loadCurrentEquipeInfo() {
     this.selectedEquipe = this.equipes.find(equipe => equipe.id === +this.selectedEquipeId) || null;
     
@@ -98,7 +99,7 @@ export class EquipeComponent implements OnInit {
     console.log("Selected equipe:", this.selectedEquipe);
   }
   
-
+  // Méthode pour mettre à jour les droits d'administration d'un utilisateur sélectionné
   loadCurrentUserInfo() {
     const selectedUtilisateur = this.equipes.find(utilisateur => utilisateur.id === this.selectedUtilisateurId);
     if (selectedUtilisateur) {
@@ -108,6 +109,7 @@ export class EquipeComponent implements OnInit {
     }
   }
 
+  // Méthode pour mettre à jour les informations d'une équipe
   onUserSelected(event: any) {
     console.log("onUserSelected called with value:", event.target.value);
     // Trouver l'utilisateur sélectionné par son ID
@@ -118,7 +120,7 @@ export class EquipeComponent implements OnInit {
     this.selectedUserIsAdmin = this.selectedUser ? this.selectedUser.admin : false;
   }
   
-
+  // Méthode pour mettre à jour les droits d'administration d'un utilisateur sélectionné
   updateUserRights() {    
     if (this.selectedUser) {
       console.log(`Mise à jour des droits pour l'utilisateur ID: ${this.selectedUser.id}, Admin: ${this.selectedUserIsAdmin}`);
@@ -132,7 +134,8 @@ export class EquipeComponent implements OnInit {
         });
     }
 }
-
+  
+// Méthode pour mettre à jour les informations d'une équipe
 updateEquipe() {
   console.log("Mise à jour de l'équipe avec ID:", this.selectedEquipeId, "Nombre de personnes:", this.nombrePersonnes);
   if (this.selectedEquipeId && this.nombrePersonnes != null) {
@@ -152,7 +155,7 @@ updateEquipe() {
 }
 
 
-
+// Méthode pour charger les jours de présence de l'équipe actuellement sélectionnée
 loadCurrentEquipeDays() {
   if (this.selectedEquipeId) {
     this.equipeService.getEquipeDetails(this.selectedEquipeId).subscribe({
@@ -169,10 +172,8 @@ loadCurrentEquipeDays() {
   }
 }
 
-/**
- *  mettre à jour les jours de présence d'une équipe en fonction des jours sélectionnés par l'utilisateur. 
- */
 
+// Méthode pour mettre à jour les jours de présence de l'équipe actuellement sélectionnée
 updateEquipeDays() {
   const joursDePresence = this.jours
     .filter((_, i) => this.joursSelectionnes[i])
@@ -186,7 +187,7 @@ updateEquipeDays() {
     });
 }
 
-  
+// Méthode pour confirmer la suppression de l'équipe actuellement sélectionnée  
 confirmDeletion() {
   if (this.selectedEquipeId) {
     if (confirm("Êtes-vous sûr de vouloir supprimer cette équipe ?")) {
