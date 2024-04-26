@@ -28,18 +28,19 @@ export class DashboardComponent implements OnInit {
         // Récupérer les affectations pour l'équipe de l'utilisateur
         this.affectationService.getAffectationsEquipe(equipeName).subscribe(affectations => {
           this.affectationsSemaine = affectations;
-          this.calculerIntervalleSemaine(affectations); // Appel de la méthode ici
-          this.dataLoaded = true;
+          this.calculerIntervalleSemaine(affectations); 
+          this.dataLoaded = true; //Indiquer que les données sont chargées
         });
 
       }
     );
   }
+
+  // Méthode pour calculer l'intervalle de la semaine à partir des affectations
   calculerIntervalleSemaine(affectations: AffectationsSemaine): void {
     const jours = Object.keys(affectations); // Extrait les clés qui sont des strings représentant des dates
     if (jours.length > 0) {
-        // Si vous avez une date de référence (par exemple, la première date des affectations), vous pouvez l'utiliser ici
-        // Sinon, utilisez la date actuelle comme référence
+        // Utilisation de la première date comme référence pour déterminer la semaine
         const dateReference = new Date(jours[0]);
 
         // Trouver le lundi de la semaine de la date de référence
@@ -50,13 +51,14 @@ export class DashboardComponent implements OnInit {
         const finSemaine = new Date(debutSemaine);
         finSemaine.setDate(debutSemaine.getDate() + 4);
 
+        // Formatage des dates en français
         const options: Intl.DateTimeFormatOptions = { year: 'numeric', month: 'long', day: 'numeric' };
         this.debutSemaine = debutSemaine.toLocaleDateString('fr-FR', options); // Lundi
         this.finSemaine = finSemaine.toLocaleDateString('fr-FR', options); // Vendredi
     }
 }
 
-
+  // Méthode pour obtenir le nom du jour à partir d'une chaîne de date ISO
   getDayName(dateIsoString: string): string {
     const date = new Date(dateIsoString);
     return new Intl.DateTimeFormat('fr-FR', { weekday: 'long' }).format(date);
