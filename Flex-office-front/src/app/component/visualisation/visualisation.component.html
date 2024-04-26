@@ -28,6 +28,7 @@
                 <li><a class="dropdown-item" routerLink="/visualisation">Gestion des Attributions</a></li>
                 </ul>
             </li> 
+             <!-- Déconnexion -->
             <li class="nav-item">
               <a class="nav-link" routerLink="/index" style="color: black;">Déconnexion</a>
             </li>
@@ -35,18 +36,17 @@
         </div>
       </nav>
       <div class="container">
-
+       <!-- Carte principale -->
       <div class="card">
         <h3 class="card-header" style="text-align: center;">
             Affectation des Bureaux pour la Semaine 
         </h3>
         <div class="card-body">
+          <!-- Tableau des affectations -->
           <table class="table">
             <thead>
               <tr>
                 <th>Équipe</th>
-                <!-- Affiche dynamiquement les jours comme en-têtes -->
-                <!-- <th *ngFor="let jour of jours">{{ jour }}</th> -->
                 <th>Lundi</th>
                 <th>Mardi</th>
                 <th>Mercredi</th>
@@ -55,6 +55,7 @@
               </tr>
             </thead>
             <tbody>
+               <!-- Affichage des affectations -->
               <tr *ngFor="let affectation of transformedAffectations">
                 <td>{{ affectation.equipe }} ({{ getNombrePersonnes(affectation.equipe) }} personnes)</td>
                 <!-- Lundi -->
@@ -143,6 +144,7 @@
               </tr>
             </tbody>
           </table>
+              <!-- Bouton pour affecter les bureaux -->
               <button class="d-block mx-auto mb-3"(click)="onAffecterBureauxClick()" >Affecter les Bureaux</button>              
       </div>
     </div>
