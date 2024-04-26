@@ -1,9 +1,9 @@
 package com.soprasteria.flexOfficebackend.model;
 
 import java.util.List;
-
 import jakarta.persistence.*;
 
+/* Représente une entité de bureau dans un système de gestion de bureau flexible. Elle utilise les annotations JPA pour la persistance des données. */
 @Entity
 @Table(name="bureau")
 public class Bureau {
@@ -22,14 +22,14 @@ public class Bureau {
     @ManyToMany(mappedBy = "bureaux")
     private List<Equipe> equipes;
 
-    // Constructeurs, getters et setters
+    // Constructeurs
     public Bureau() {}
 
     public Bureau(int id, String nom) {
         this.id = id;
         this.nom = nom;
     }
-
+    //les getters et setters
     public int getId() {
         return id;
     }
