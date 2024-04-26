@@ -21,7 +21,7 @@ export class VisualisationComponent implements OnInit {
   equipes: any[] = [];
   bureaux: any[] = [];
   remainingPlaces: { bureau: string, placesRestantes: number, jour: string }[] = [];
-  placesDisponibles: any; // Ce type peut être ajusté selon vos besoins pour une meilleure typage
+  placesDisponibles: any; 
   
   constructor(private authService: AuthService,private affectationService: AffectationService, private equipeService: EquipeService, private bureauService: BureauService) { }
 
@@ -35,27 +35,28 @@ export class VisualisationComponent implements OnInit {
       }
     )
 
-
+      // Récupération des places disponibles depuis le service d'affectation
       this.affectationService.getPlacesDisponibles().subscribe(data => {
 
         console.log("places restantes :", data);
         this.placesDisponibles = data;
       });
     
+    // Récupération des affectations depuis le service d'affectation
     this.affectationService.getAffectations().subscribe(data => {
-
       console.log("Données d'affectations reçues du backend :", data);
       this.affectationsSemaine = data;
       this.transformData(data);
       this.updateRemainingPlaces(); // Appel de la méthode pour mettre à jour les places restantes
     });
   
-
+    // Récupération des équipes depuis le service d'équipe
     this.equipeService.getEquipes().subscribe(data => {
       this.equipes = data;
       this.updateRemainingPlaces(); // Appel de la méthode pour mettre à jour les places restantes après récupération des équipes
     });
 
+    // Récupération des bureaux depuis le service de bureau
     this.bureauService.getBureaux().subscribe(data => {
       this.bureaux = data;
     });
@@ -126,6 +127,7 @@ export class VisualisationComponent implements OnInit {
         return new Intl.DateTimeFormat('fr-FR', { weekday: 'long' }).format(date);
       }
 
+      // Calcul des places restantes pour chaque bureau
       calculPlacesRestantes(placesDisponibles: any): { bureau: string, placesRestantes: number, jour: string }[] {
         const result: { bureau: string, placesRestantes: number, jour: string }[] = [];
         
@@ -144,17 +146,20 @@ export class VisualisationComponent implements OnInit {
 
         return result;
     }
-
+   // Mise à jour des places restantes
     updateRemainingPlaces() {
       if (this.placesDisponibles) {
         this.remainingPlaces = this.calculPlacesRestantes(this.placesDisponibles);
       }
     }
 
+   // Méthode pour obtenir la capacité d'un bureau spécifique
     getBureauCapacite(nomBureau: string): number | undefined {
       const bureau = this.bureaux.find(b => b.nom === nomBureau);
       return bureau ? bureau.capacite : undefined;
     }
+  
+    // Méthode pour obtenir le nombre de personnes dans une équipe spécifique
     getNombrePersonnes(nomEquipe: string): number | undefined {
       const equipe = this.equipes.find(e => e.nom === nomEquipe);
       return equipe ? equipe.nombrePersonnes : undefined;
@@ -167,7 +172,7 @@ export class VisualisationComponent implements OnInit {
     }
 
   
-
+    // Gestion du clic sur le bouton d'affectation des bureaux
     onAffecterBureauxClick() {
       this.affectationService.affecterBureaux().subscribe(result => {
         window.location.reload();
