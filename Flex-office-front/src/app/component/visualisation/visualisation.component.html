@@ -141,76 +141,12 @@
                   </ng-container>
                 </td>
               </tr>
-
-              <!-- <tr *ngFor="let affectation of transformedAffectations">
-                <td>{{ affectation.equipe }} ({{ getNombrePersonnes(affectation.equipe) }} personnes)</td>
-                <td>  <ng-container *ngIf="affectation.lundi">
-                  <button tooltip="Places disponibles: {{ getPlacesRestantes(affectation.lundi,'lundi') }}">
-                    {{ affectation.lundi }}
-                  </button>
-                </ng-container></td>
-                 <td>
-                  <ng-container *ngIf="affectation.mardi">
-                    <button tooltip="Places disponibles: {{ getPlacesRestantes(affectation.mardi,'mardi') }}">
-                      {{ affectation.mardi }}
-                    </button>
-                  </ng-container>
-                </td>
-                
-                <td>
-                  <ng-container *ngIf="affectation.mercredi">
-                    <button tooltip="Places disponibles: {{ getPlacesRestantes(affectation.mercredi,'mercredi') }}">
-                      {{ affectation.mercredi }}
-                    </button>
-                  </ng-container>
-                </td>
-                
-                <td>
-                  <ng-container *ngIf="affectation.jeudi">
-                    <button tooltip="Places disponibles: {{ getPlacesRestantes(affectation.jeudi,'jeudi') }}">
-                      {{ affectation.jeudi }}
-                    </button>
-                  </ng-container>
-                </td>
-                
-                <td>
-                  <ng-container *ngIf="affectation.vendredi">
-                    <button tooltip="Places disponibles: {{ getPlacesRestantes(affectation.vendredi,'vendredi') }}">
-                      {{ affectation.vendredi }}
-                    </button>
-                  </ng-container>
-                </td>
-                
-              </tr> -->
             </tbody>
           </table>
               <button class="d-block mx-auto mb-3"(click)="onAffecterBureauxClick()" >Affecter les Bureaux</button>              
       </div>
     </div>
 
-
-      <!-- Deuxième tableau pour les places restantes -->
-      <!-- <div class="card">
-        <h3 class="card-header" style="text-align: center;">
-          Places restantes</h3>
-        <table class="table">
-          <thead>
-            <tr>
-              <th>Bureau</th>
-              <th>Places restantes</th>
-              <th>Jour</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let place of remainingPlaces">
-              <td>{{ place.bureau }}</td>
-              <td>{{ place.placesRestantes }}</td>
-              <td>{{place.jour}}</td>
-            </tr>
-          </tbody>
-        </table>
-        
-      </div> -->
   </div>
   </body>
 </html>
