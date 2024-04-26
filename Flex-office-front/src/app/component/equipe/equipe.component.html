@@ -28,6 +28,7 @@
                 <li><a class="dropdown-item" routerLink="/visualisation">Gestion des Attributions</a></li>
                 </ul>
             </li>
+            <!-- Lien de déconnexion -->
             <li class="nav-item">
               <a class="nav-link" routerLink="/index" style="color: black;">Déconnexion</a>
             </li>
@@ -41,6 +42,7 @@
                 Gestion des équipes
             </h3>
             <div class="card-body">
+                <!-- Accordion pour différentes actions de gestion des équipes -->
                 <div class="accordion" id="accordionPanelsStayOpenExample">
                     <div class="accordion-item">
                       <h2 class="accordion-header">
@@ -49,6 +51,7 @@
                         </button>
                       </h2>
                       <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse ">
+                        <!-- Formulaire pour ajouter une équipe -->
                         <form (ngSubmit)="ajouterEquipe()" class="form-inline m-4">
                             <div class="form-group mb-2">
                               <label for="nom" class="sr-only">Nom de l'équipe</label>
@@ -61,6 +64,7 @@
                           </form>
                       </div>
                     </div>
+                    <!-- Section pour modifier le nombre de personnes dans une équipe -->
                     <div class="accordion-item">
                       <h2 class="accordion-header">
                         <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseTwo" aria-expanded="false" aria-controls="panelsStayOpen-collapseTwo">
@@ -87,7 +91,7 @@
                       </div>
                       
                     </div>
-
+  
                     <div class="accordion-item">
                       <h2 class="accordion-header">
                         <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseDays" aria-expanded="false" aria-controls="panelsStayOpen-collapseDays">
@@ -95,6 +99,7 @@
                         </button>
                       </h2>
                       <div id="panelsStayOpen-collapseDays" class="accordion-collapse collapse">
+                        <!-- Section pour modifier les jours de présence d'une équipe -->
                         <div class="accordion-body">
                           <form>
                             <div class="form-group">
@@ -115,7 +120,7 @@
                         </div>
                       </div>
                     </div>
-                    
+                    <!-- Section pour supprimer une équipe -->
                     <div class="accordion-item">
                       <h2 class="accordion-header">
                         <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseThree" aria-expanded="false" aria-controls="panelsStayOpen-collapseThree">
@@ -143,6 +148,7 @@
                           </button>
                         </h2>
                         <div id="panelsStayOpen-collapseFour" class="accordion-collapse collapse">
+                          <!-- Section pour supprimer une équipe -->
                           <div class="accordion-body">
                             <form id="adminRightsForm">
                               <div class="form-group">
