@@ -1,7 +1,6 @@
-// Dans un fichier séparé, par exemple utilisateur.model.ts
 export interface Utilisateur {
-    id: number;
-    nom: string;
-    admin: boolean;
-    // Autres champs selon votre modèle
+    id: number; // Identifiant unique de l'utilisateur 
+    nom: string; // Nom de l'utilisateur
+    admin: boolean; // Indique si l'utilisateur est un administrateur 
+    
   }
