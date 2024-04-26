@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Map;
 import java.time.LocalDate;
 
-
+/* Ce contrôleur, gère les requêtes HTTP liées aux affectations.*/
 
 @CrossOrigin(origins="*")
 @RestController
@@ -27,28 +27,29 @@ public class AffectationController {
     @Autowired
     private AffectationService affectationService;
     
+    //Méthode qui gère la requête GET pour récupérer toutes les affectations existantes.
     @GetMapping
     public ResponseEntity<Map<LocalDate, Map<String, List<String>>>> getAffectations() {
         Map<LocalDate, Map<String, List<String>>> affectations = affectationService.recupererAffectationsExistantes();
         return ResponseEntity.ok(affectations);
     }
     
-    // Endpoint pour récupérer les affectations hebdomadaires avec capacités restantes
+    
+    //Méthode qui gère la requête GET pour récupérer les places disponibles par bureau.
     @GetMapping("/placesDisponibles")
     public ResponseEntity<Map<LocalDate, Map<String, Integer>>> getPlacesDisponibles() {
         Map<LocalDate, Map<String, Integer>> places=affectationService.recupererPlacesRestantesParBureau();
         return ResponseEntity.ok(places);
     }
-
+    // Méthode qui gère la requête GET pour récupérer les affectations par équipe spécifiée.
     @GetMapping("/affectations/{nomEquipe}")
     public Map<LocalDate, List<String>> getAffectationsParEquipe(@PathVariable String nomEquipe) {
         return affectationService.getAffectationsParEquipe(nomEquipe);
     }
-
+    //Méthode qui gère la requête POST pour affecter les bureaux aux équipes.
     @PostMapping("/affecterBureaux")
     public ResponseEntity<?> affecterBureaux() {
         Map<LocalDate, Map<String, Object>> affectations = affectationService.planifierAffectationHebdomadaire();
-        // Logique pour sauvegarder ou traiter les affectations...
         return ResponseEntity.ok(affectations);
     }
     
